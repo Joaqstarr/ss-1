@@ -9,7 +9,10 @@ STATE_DEFINE(dAcOfortuneRing_c, Play);
 dAcOfortuneRing_c::dAcOfortuneRing_c() : mStateMgr(*this, sStateID::null) {}
 dAcOfortuneRing_c::~dAcOfortuneRing_c() {}
 
-void dAcOfortuneRing_c::initializeState_Wait() {}
+void dAcOfortuneRing_c::initializeState_Wait() {
+    mShouldStart = false;
+    mUnknownFlag = false;
+}
 void dAcOfortuneRing_c::executeState_Wait() {}
 void dAcOfortuneRing_c::finalizeState_Wait() {}
 void dAcOfortuneRing_c::initializeState_Play() {}
