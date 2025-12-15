@@ -13,8 +13,14 @@ void dAcOfortuneRing_c::initializeState_Wait() {
     mShouldStart = false;
     mUnknownFlag = false;
 }
-void dAcOfortuneRing_c::executeState_Wait() {}
+void dAcOfortuneRing_c::executeState_Wait() {
+    if(!mShouldStart) {
+        return;
+    }
+    mStateMgr.changeState(StateID_Play);
+}
 void dAcOfortuneRing_c::finalizeState_Wait() {}
+
 void dAcOfortuneRing_c::initializeState_Play() {}
 void dAcOfortuneRing_c::executeState_Play() {}
 
