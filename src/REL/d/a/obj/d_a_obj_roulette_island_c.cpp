@@ -22,7 +22,10 @@ void dAcOrouletteIslandC_c::executeState_Wait() {
 }
 
 void dAcOrouletteIslandC_c::finalizeState_Wait() {}
-void dAcOrouletteIslandC_c::initializeState_Play() {}
+void dAcOrouletteIslandC_c::initializeState_Play() {
+    unknownFlag = false;
+    playerOnIsland = false;
+}
 void dAcOrouletteIslandC_c::executeState_Play() {}
 void dAcOrouletteIslandC_c::finalizeState_Play() {}
 

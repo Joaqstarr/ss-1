@@ -30,7 +30,7 @@ private:
 
     /* 0x5B8 */ bool playerOnIsland;
     /* 0x5B9 */ bool shouldStartPlay;
-    /* 0x5BA */ u8 padding_5BA;
+    /* 0x5BA */ bool unknownFlag;
     /* 0x5BB */ u8 padding_5BB;
 
 };
