@@ -2,6 +2,9 @@
 #include "nw4r/g3d/res/g3d_resfile.h"
 #include "d/d_stage.h"
 #include "d/col/bg/d_bg_w.h"
+#include "d/d_rumble.h"
+#include "d/lyt/d_lyt_mini_game.h"
+#include "d/a/obj/d_a_obj_fortune_ring.h"
 
 SPECIAL_ACTOR_PROFILE(OBJ_ROULETTE_ISLAND_C, dAcOrouletteIslandC_c, fProfile::OBJ_ROULETTE_ISLAND_C, 0x1CA, 0, 2);
 
@@ -26,7 +29,26 @@ void dAcOrouletteIslandC_c::initializeState_Play() {
     unknownFlag = false;
     playerOnIsland = false;
 }
-void dAcOrouletteIslandC_c::executeState_Play() {}
+
+dAcOfortuneRing_c * getAcOfortuneRingPtr()
+{
+    return dAcOfortuneRing_c::PTR;
+}
+
+void dAcOrouletteIslandC_c::executeState_Play() {
+    if(playerOnIsland) {
+        dRumble_c::start(dRumble_c::sRumblePreset3, 3);
+        dLytMiniGame_c::GetInstance()->setComplete();
+
+        dAcOfortuneRing_c *fortuneRing = getAcOfortuneRingPtr();
+        fortuneRing->fn_354_FD0(0);
+        mStateMgr.changeState(StateID_Wait);
+    } else if(unknownFlag) {
+        mStateMgr.changeState(StateID_Wait);
+    }
+}
+
+
 void dAcOrouletteIslandC_c::finalizeState_Play() {}
 
 bool dAcOrouletteIslandC_c::initModels(){
