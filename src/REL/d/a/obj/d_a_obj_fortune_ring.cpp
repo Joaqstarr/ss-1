@@ -1,4 +1,5 @@
 #include "d/a/obj/d_a_obj_fortune_ring.h"
+#include "d/lyt/d_lyt_mini_game.h"
 
 SPECIAL_ACTOR_PROFILE(OBJ_FORTUNE_RING, dAcOfortuneRing_c, fProfile::OBJ_FORTUNE_RING, 0x1C6, 0, 0);
 
@@ -13,4 +14,7 @@ void dAcOfortuneRing_c::executeState_Wait() {}
 void dAcOfortuneRing_c::finalizeState_Wait() {}
 void dAcOfortuneRing_c::initializeState_Play() {}
 void dAcOfortuneRing_c::executeState_Play() {}
-void dAcOfortuneRing_c::finalizeState_Play() {}
+
+void dAcOfortuneRing_c::finalizeState_Play() {
+    dLytMiniGame_c::GetInstance()->startFinish();
+}
