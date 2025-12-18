@@ -11,27 +11,34 @@ class dAcOrouletteIslandC_c : public dAcObjBase_c {
 public:
     dAcOrouletteIslandC_c();
     virtual ~dAcOrouletteIslandC_c();
-private:
 
-public:
+    static dAcOrouletteIslandC_c* getPtr();
     bool initModels();
+    int draw() override;
+    int execute() override;
+    int init() override;
+    static void interactionWithBgCallback(dBgW * i_col, dAcObjBase_c * i_actor, dAcObjBase_c * i_other);
+    int fn_358_800();
+
     STATE_FUNC_DECLARE(dAcOrouletteIslandC_c, Wait);
     STATE_FUNC_DECLARE(dAcOrouletteIslandC_c, Play);
 
-    /* 0x330 */ m3d::smdl_c model1;
-    /* 0x34C */ m3d::smdl_c model2;
+    /* 0x330 */ m3d::smdl_c mModel1;
+    /* 0x34C */ m3d::smdl_c mModel2;
 
-    /* 0x368 */ nw4r::g3d::ResFile mpResFile;
+    /* 0x368 */ nw4r::g3d::ResFile mResFile;
 
-    /* 0x36C */ dBgW bgCollision;
+    /* 0x36C */ dBgW mBgCollision;
+
 
 private:
-    /* 0x??? */ STATE_MGR_DECLARE(dAcOrouletteIslandC_c);
+    /* 0x57C */ STATE_MGR_DECLARE(dAcOrouletteIslandC_c);
 
-    /* 0x5B8 */ bool playerOnIsland;
-    /* 0x5B9 */ bool shouldStartPlay;
-    /* 0x5BA */ bool unknownFlag;
-    /* 0x5BB */ u8 padding_5BB;
+    /* 0x5B8 */ bool mPlayerOnIsland;
+    /* 0x5B9 */ bool mShouldStartPlay;
+    /* 0x5BA */ bool mShouldEndMinigame;
+
+    static dAcOrouletteIslandC_c* s_ptr;
 
 };
 

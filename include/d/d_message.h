@@ -336,7 +336,6 @@ public:
         mCurrentTextFileNumber = num;
     }
 
-private:
     static void *sZev0;
     static void *sZevStage;
 

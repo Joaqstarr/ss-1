@@ -23,3 +23,8 @@ void dAcNpcDiveGameJudge_c::finalizeState_Escape() {}
 void dAcNpcDiveGameJudge_c::initializeState_EscapeEnd() {}
 void dAcNpcDiveGameJudge_c::executeState_EscapeEnd() {}
 void dAcNpcDiveGameJudge_c::finalizeState_EscapeEnd() {}
+
+
+
+void dAcNpcDiveGameJudge_c::finishMinigame(int param_2,u16 param_3,u16 param_4,int param_5){}
+

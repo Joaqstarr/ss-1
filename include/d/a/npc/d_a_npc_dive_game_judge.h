@@ -16,6 +16,8 @@ public:
     STATE_FUNC_DECLARE(dAcNpcDiveGameJudge_c, Escape);
     STATE_FUNC_DECLARE(dAcNpcDiveGameJudge_c, EscapeEnd);
 
+    void finishMinigame(int param_2,u16 param_3,u16 param_4,int param_5);
+
 private:
     /* 0x??? */ STATE_MGR_DECLARE(dAcNpcDiveGameJudge_c);
 };
