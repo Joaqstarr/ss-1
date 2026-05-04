@@ -110,19 +110,18 @@ public:
 
 private:
     void playWink();
-    bool fn_177_6B10(bool lookAtTarget, const mAng &);
-    void calcHeadRotation(bool);
+
+    bool calcHeadRotation(bool lookAtTarget, const mAng &); // the Side-to-side angle
+    void calcHeadPitch(bool);                               // The up-down angle
     void resetHeadRotation(bool);
 
     bool fn_177_7040(u32, f32);
 
     bool isScary();
-
     bool shouldBeScared();
 
-    bool fn_177_7510(f32);
-
-    bool fn_177_75E0();
+    bool isWithinTargetRadius(f32 radius);
+    bool isHorwellRemlitQuestComplete();
 
     /** false -> compares to camera
      *   true -> compares to player */
@@ -135,7 +134,7 @@ private:
 
     void fn_177_79D0(bool);
 
-    bool fn_177_7B10();
+    bool isUnderWater();
     void nightSleepDemoImpl();
 
     void checkSlope(bool);
@@ -145,7 +144,7 @@ private:
     bool fn_177_8AC0();
     bool fn_177_8C20(mAng);
     bool fn_177_8F90();
-    bool fn_177_9370(f32);
+    bool isPlayerInNightRange(f32 range);
 
 private:
     /* 0x378 */ STATE_MGR_DECLARE(dAcEremly_c);
@@ -162,7 +161,7 @@ private:
 
     /* 0x9C4 */ dEmitter_c mEmitters[2];
 
-    /* 0xA2C */ dAcRef_c<dAcNpcSkn2_c> mRef1; // Temporary until type known
+    /* 0xA2C */ dAcRef_c<dAcNpcSkn2_c> mHorwellRef;
     /* 0xA38 */ dAcRef_c<dAcBomb_c> mNearbyBombRef;
 
     /* 0xA44 */ mVec3_c mTargetPosition;
@@ -212,8 +211,8 @@ private:
     /* 0xB5C */ u16 mFlySpeedCounter;
     /* 0xB5E */ u16 mFlyAngleCounter;
     /* 0xB60 */ u8 mAnimation;
-    /* 0xB61 */ u8 field_0xB61;
-    /* 0xB62 */ u8 mSleepDemoPlayedSceneflag;
+    /* 0xB61 */ u8 mIsHorwellsPet;
+    /* 0xB62 */ u8 mSceneflag;
     /* 0xB63 */ u8 mNightSleepDemoStep;
     /* 0xB64 */ u8 field_0xB64;
     /* 0xB65 */ u8 mAnmStep;
