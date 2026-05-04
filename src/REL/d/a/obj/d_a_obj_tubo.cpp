@@ -284,9 +284,9 @@ void dAcOtubo_c::executeState_Grab() {
         dAcNpcCeLady_c *lady = mCeLady.get();
         dAcNpcCeFriend_c *ceFriend = mCeFriend.get();
         if (ceFriend && ceFriend->fn_11_17C0(this)) {
-            getLinkage().fn_80050EA0(this);
+            getLinkage().forceRemove(this);
         } else if (lady && lady->fn_12_1C20(this)) {
-            getLinkage().fn_80050EA0(this);
+            getLinkage().forceRemove(this);
         }
     }
 
@@ -403,7 +403,7 @@ void dAcOtubo_c::initializeState_Rebirth() {
     mSph.ClrCoSet();
     mSph.ClrTgSet();
     setObjectProperty(OBJ_PROP_0x200);
-    getLinkage().fn_80050EA0(this);
+    getLinkage().forceRemove(this);
 
     int item_drop_table = getParams2UpperByte();
     switch (item_drop_table) {
@@ -452,7 +452,7 @@ void dAcOtubo_c::destroy() {
         return;
     }
     fn_80022BE0(dLightEnv_c::GetPInstance(), mPosition);
-    getLinkage().fn_80050EA0(this);
+    getLinkage().forceRemove(this);
 
     dEmitterBase_c *fx_thing = dJEffManager_c::spawnEffect(
         PARTICLE_RESOURCE_ID_MAPPING_211_, mPositionCopy2, nullptr, nullptr, nullptr, nullptr, 0, 0

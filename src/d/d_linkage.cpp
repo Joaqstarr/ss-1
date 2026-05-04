@@ -115,7 +115,7 @@ void dLinkage_c::fn_80050E40(dAcObjBase_c *pActor, const f32 speed, const f32 ve
     pActor->mAngle.y = rot;
 }
 
-void dLinkage_c::fn_80050EA0(dAcObjBase_c *pActor) {
+void dLinkage_c::forceRemove(dAcObjBase_c *pActor) {
     mState = STATE_DELETE;
     fn_80050EB0(pActor);
 }
@@ -178,7 +178,7 @@ void dLinkage_c::bushTpFunc(dBgS_Acch &acch) {
         if (mType == CONNECTION_7 && mControllingActor.p_owner == player) {
             if (!checkFlag(0x10000)) {
                 if (acch.ChkWallHit(nullptr)) {
-                    fn_80050EA0(player->getWhippedItem());
+                    forceRemove(player->getWhippedItem());
                     return;
                 }
                 field_0x1A = 3;
@@ -210,7 +210,7 @@ void dLinkage_c::fn_80051190(dAcObjBase_c *pActor) {
     }
     pLinkedActor = nullptr;
 
-    fn_80050EA0(pActor);
+    forceRemove(pActor);
 }
 
 void dLinkage_c::fn_800511E0(dAcObjBase_c *pActor) {
