@@ -6,8 +6,7 @@
 #include "egg/math/eggVector.h"
 #include "m/m_angle.h"
 
-
-class JPAEmitterWorkData;
+struct JPAEmitterWorkData;
 
 /**
  * @ingroup jsystem-jparticle
@@ -43,8 +42,7 @@ struct JPADynamicsBlockData {
     /* 0x74 */ u16 mVolumeSize;
     /* 0x76 */ u16 mDivNumber;
     /* 0x78 */ u8 mRateStep;
-    /* 0x7C */ u32 field_0x7c;
-};
+};  // Size: 0x7C
 
 typedef void (*JPADynamicsCalcVolumeFunc)(JPAEmitterWorkData*);
 
@@ -66,7 +64,7 @@ public:
     void init();
     void create(JPAEmitterWorkData*);
 
-    void calc(JPAEmitterWorkData* work) { mpCalcVolumeFunc(work); }
+    void calc(JPAEmitterWorkData* work) const { mpCalcVolumeFunc(work); }
 
     s16 getStartFrame() const { return mpData->mStartFrame; }
     u32 getResUserWork() const { return mpData->mResUserWork; }
@@ -83,23 +81,23 @@ public:
     void getEmitterDir(EGG::Vector3f* vec) const { 
         vec->set(mpData->mEmitterDir.x, mpData->mEmitterDir.y, mpData->mEmitterDir.z); 
     }
-    void getEmitterRot(mAng3_c* vec) const { 
+    void getEmitterRot(mAng3_c* vec) const {
         vec->set(mpData->mEmitterRot); 
-    } 
-    s16 getMaxFrame() { return mpData->mMaxFrame; }
-    s16 getLifetime() { return mpData->mLifeTime; }
-    u16 getVolumeSize() { return mpData->mVolumeSize; }
-    f32 getRate() { return mpData->mRate; }
-    u8 getRateStep() { return mpData->mRateStep; }
-    f32 getVolumeSweep() { return mpData->mVolumeSweep; }
-    f32 getVolumeMinRad() { return mpData->mVolumeMinRad; }
-    f32 getInitVelOmni() { return mpData->mInitialVelOmni; }
-    f32 getInitVelAxis() { return mpData->mInitialVelAxis; }
-    f32 getInitVelDir() { return mpData->mInitialVelDir; }
-    f32 getInitVelDirSp() { return mpData->mSpread; }
-    f32 getInitVelRndm() { return mpData->mInitialVelRndm; }
+    }
+    s16 getMaxFrame() const { return mpData->mMaxFrame; }
+    s16 getLifetime() const { return mpData->mLifeTime; }
+    u16 getVolumeSize() const { return mpData->mVolumeSize; }
+    f32 getRate() const { return mpData->mRate; }
+    u8 getRateStep() const { return mpData->mRateStep; }
+    f32 getVolumeSweep() const { return mpData->mVolumeSweep; }
+    f32 getVolumeMinRad() const { return mpData->mVolumeMinRad; }
+    f32 getInitVelOmni() const { return mpData->mInitialVelOmni; }
+    f32 getInitVelAxis() const { return mpData->mInitialVelAxis; }
+    f32 getInitVelDir() const { return mpData->mInitialVelDir; }
+    f32 getInitVelDirSp() const { return mpData->mSpread; }
+    f32 getInitVelRndm() const { return mpData->mInitialVelRndm; }
     f32 getInitVelRatio() const { return mpData->mInitialVelRatio; }
-    f32 getAirRes() { return mpData->mAirResist; }
+    f32 getAirRes() const { return mpData->mAirResist; }
     f32 getLifetimeRndm() const { return mpData->mLifeTimeRndm; }
     f32 getMomentRndm() const { return mpData->mMoment; }
 

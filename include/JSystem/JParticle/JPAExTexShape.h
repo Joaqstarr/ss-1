@@ -4,7 +4,7 @@
 #include "JSystem/JParticle/JPABaseShape.h"
 #include "common.h"
 
-class JPAEmitterWorkData;
+struct JPAEmitterWorkData;
 
 /**
  * @ingroup jsystem-jparticle
@@ -31,7 +31,7 @@ struct JPAExTexShapeData {
     /* 0x4D */ s8 mExpScale;
     /* 0x4E */ s8 mIndTexIdx;
     /* 0x4F */ s8 mSecTexIdx;
-};
+};  // Size: 0x50
 
 /**
  * @ingroup jsystem-jparticle
@@ -46,7 +46,7 @@ public:
     s8 getExpScale() const { return mpData->mExpScale; }
     u8 getIndTexIdx() const { return mpData->mIndTexIdx; }
     u8 getSecTexIdx() const { return mpData->mSecTexIdx; }
-    bool isUseIndirect() const { return !!(mpData->mFlags & 0x01); }
+    BOOL isUseIndirect() const { return !!(mpData->mFlags & 0x01); }
     BOOL isUseSecTex() const { return (mpData->mFlags & 0x0100); }
 
     f32 getField_0x24() const { return mpData->field_0x24; }
@@ -62,6 +62,7 @@ public:
 
 public:
     const JPAExTexShapeData* mpData;
+    // SS addition
     void fn_8031DE80(const JPABaseShape *bsp, f32) const;
 };
 

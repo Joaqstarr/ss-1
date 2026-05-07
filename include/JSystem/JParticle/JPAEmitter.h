@@ -81,8 +81,6 @@ public:
     virtual void executeAfter(JPABaseEmitter*) {}
     virtual void draw(JPABaseEmitter*) {}
     virtual void drawAfter(JPABaseEmitter*) {}
-        
-    //~JPAEmitterCallBack();
 };
 
 enum {
@@ -119,11 +117,12 @@ public:
     void setStatus(u32 status) { mStatus |= status; }
     void clearStatus(u32 status) { mStatus &= ~status; }
     u32 checkStatus(u32 status) const { return (mStatus & status); }
-    bool checkFlag(u32 flag) const { return !!(mpRes->getDyn()->getFlag() & flag); }
-    u32 getDynResUserWork() const { return mpRes->getDyn()->getResUserWork(); }
+    u32 checkFlag(u32 flag) const { return pRes->getDyn()->getFlag() & flag; }
+    u32 getDynResUserWork() const { return pRes->getDyn()->getResUserWork(); }
     u8 getResourceManagerID() const { return mResMgrID; }
     u8 getGroupID() const { return mGroupID; }
     u8 getDrawTimes() const { return mDrawTimes; }
+    f32 getRate() const { return mRate; }
     void setRate(f32 rate) { mRate = rate; }
     void setDirectionalSpeed(f32 i_speed) { mDirSpeed = i_speed; }
     void setRandomDirectionSpeed(f32 i_speed) { mRndmDirSpeed = i_speed; }
@@ -131,21 +130,22 @@ public:
     void setGlobalRTMatrix(const Mtx m) { JPASetRMtxTVecfromMtx(m, mGlobalRot, &mGlobalTrs); }
     void setGlobalSRTMatrix(const Mtx m) { 
         JPASetRMtxSTVecfromMtx(m, mGlobalRot, &mGlobalScl, &mGlobalTrs);
-
-        // "set is used in TP debug"
         mGlobalPScl.set(mGlobalScl.x, mGlobalScl.y);
     }
     void setGlobalTranslation(f32 x, f32 y, f32 z) { mGlobalTrs.set(x, y, z); }
     void setGlobalTranslation(const EGG::Vector3f& trs) { mGlobalTrs.set(trs); }
     void getLocalTranslation(EGG::Vector3f& vec) { vec.set(mLocalTrs); }
+    void getLocalTranslation(EGG::Vector3f* vec) const { vec->set(mLocalTrs); }
     void setGlobalRotation(const mAng3_c& rot) {
         JPAGetXYZRotateMtx(rot.x, rot.y, rot.z, mGlobalRot); 
     }
     void getGlobalTranslation(EGG::Vector3f* out) const { out->set(mGlobalTrs); }
     void setGlobalDynamicsScale(const EGG::Vector3f& i_scale) { mGlobalScl.set(i_scale); }
+    void getGlobalDynamicsScale(EGG::Vector3f* i_scale) const { i_scale->set(mGlobalScl); }
     void setGlobalAlpha(u8 alpha) { mGlobalPrmClr.a = alpha; }
-    u8 getGlobalAlpha() { return mGlobalPrmClr.a; }
+    u8 getGlobalAlpha() const { return mGlobalPrmClr.a; }
     void getGlobalPrmColor(GXColor& color) { color = mGlobalPrmClr; }
+    void getGlobalPrmColor(GXColor* color) const { *color = mGlobalPrmClr; }
     void setGlobalPrmColor(u8 r, u8 g, u8 b) { mGlobalPrmClr.r = r; mGlobalPrmClr.g = g; mGlobalPrmClr.b = b; }
     void setGlobalEnvColor(u8 r, u8 g, u8 b) { mGlobalEnvClr.r = r; mGlobalEnvClr.g = g; mGlobalEnvClr.b = b; }
     void setVolumeSize(u16 size) { mVolumeSize = size; }
@@ -154,20 +154,26 @@ public:
     void setAwayFromAxisSpeed(f32 i_speed) { mAwayFromAxisSpeed = i_speed; }
     void setSpread(f32 i_spread) { mSpread = i_spread; }
     void setLocalTranslation(const EGG::Vector3f& i_trans) { mLocalTrs.set(i_trans); }
-    void setLocalRotation(const mAng3_c& i_rot) { mLocalRot.set(i_rot.x * 0.005493248f, i_rot.y * 0.005493248f, i_rot.z * 0.005493248f); }
+    void setLocalRotation(const mAng3_c& i_rot) {
+        mLocalRot.set(i_rot.x * (360.0f / 0xffff), i_rot.y * (360.0f / 0xffff),
+                      i_rot.z * (360.0f / 0xffff));
+    }
     void setRateStep(u8 i_step) { mRateStep = i_step; }
 
     void setGlobalParticleHeightScale(f32 height) {
         mGlobalPScl.y = height;
     }
     void setGlobalParticleScale(const EGG::Vector3f& scale) {
-        mGlobalPScl.set(scale.x, scale.y);
+        mGlobalPScl.set((f32)scale.x, (f32)scale.y);
     }
     void setGlobalParticleScale(f32 scaleX, f32 scaleY) {
         mGlobalPScl.set(scaleX, scaleY);
     }
-    void getGlobalParticleScale(EGG::Vector3f& scale) {
+    void getGlobalParticleScale(EGG::Vector3f& scale) const {
         scale.set(mGlobalPScl.x, mGlobalPScl.y, 1.0f);
+    }
+    void getGlobalParticleScale(EGG::Vector3f* scale) const {
+        scale->set(mGlobalPScl.x, mGlobalPScl.y, 1.0f);
     }
     void setGlobalScale(const EGG::Vector3f& scale) {
         mGlobalScl.set(scale);
@@ -214,19 +220,27 @@ public:
     void stopDrawParticle() { setStatus(JPAEmtrStts_StopDraw); }
     void playDrawParticle() { clearStatus(JPAEmtrStts_StopDraw); }
 
-    u32 getUserWork() { return mpUserWork; }
-    void setUserWork(u32 userWork) { mpUserWork = userWork; }
-    u32 getParticleNumber() {
+    uintptr_t getUserWork() const { return mpUserWork; }
+    void setUserWork(uintptr_t userWork) { mpUserWork = userWork; }
+    u32 getParticleNumber() const {
         return mAlivePtclBase.getNum() + mAlivePtclChld.getNum();
     }
-    bool isEnableDeleteEmitter() {
+    bool isEnableDeleteEmitter() const {
         return checkStatus(JPAEmtrStts_EnableDeleteEmitter) && getParticleNumber() == 0;
     }
     void setDrawTimes(u8 drawTimes) { mDrawTimes = drawTimes; }
     void setParticleCallBackPtr(JPAParticleCallBack* cb) { mpPtclCallBack = cb; }
-    JPAParticleCallBack* getParticleCallBackPtr() { return mpPtclCallBack; }
+    JPAParticleCallBack* getParticleCallBackPtr() const { return mpPtclCallBack; }
     JPAEmitterCallBack* getEmitterCallBackPtr() const { return mpEmtrCallBack; }
     u32 getAge() const { return mTick; }
+
+    void setVolumeMiniRadius(f32 param_1) {
+        mVolumeMinRad = param_1;
+    }
+
+    void setMaxFrame(s32 maxFrame) {
+        mMaxFrame = maxFrame;
+    }
 
 public:
     /* 0x00 */ EGG::Vector3f mLocalScl;
@@ -259,7 +273,7 @@ public:
     /* 0xD4 */ JPAList<JPABaseParticle> mAlivePtclChld;
     /* 0xE0 */ JPAList<JPABaseParticle>* mpPtclPool;
     /* 0xE4 */ JPAEmitterManager* mpEmtrMgr;
-    /* 0xE8 */ JPAResource* mpRes;
+    /* 0xE8 */ JPAResource* pRes;
     /* 0xEC */ JPAEmitterCallBack* mpEmtrCallBack;
     /* 0xF0 */ JPAParticleCallBack* mpPtclCallBack;
     /* 0xF4 */ u32 mStatus;
