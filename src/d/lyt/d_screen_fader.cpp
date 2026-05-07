@@ -45,14 +45,14 @@ void dScreenFader_c::draw() {
     f32 scaleY = EGG::Screen::GetSizeYMax();
 
     mMtx_c mtx;
-    PSMTXScale(mtx, scaleX, mProgress, 1.0f);
-    PSMTXTransApply(mtx, mtx, -scaleX * 0.5f, scaleY * 0.5f - mProgress, 0.0f);
+    MTXScale(mtx, scaleX, mProgress, 1.0f);
+    MTXTransApply(mtx, mtx, -scaleX * 0.5f, scaleY * 0.5f - mProgress, 0.0f);
 
     GXColor a = EGG::DrawGX::BLACK;
     EGG::DrawGX::DrawDL(EGG::DrawGX::DL_17, mtx, a);
 
-    PSMTXScale(mtx, scaleX, mProgress, 1.0f);
-    PSMTXTransApply(mtx, mtx, -scaleX * 0.5f, -scaleY * 0.5f, 0.0f);
+    MTXScale(mtx, scaleX, mProgress, 1.0f);
+    MTXTransApply(mtx, mtx, -scaleX * 0.5f, -scaleY * 0.5f, 0.0f);
     EGG::DrawGX::DrawDL(EGG::DrawGX::DL_17, mtx, a);
 }
 

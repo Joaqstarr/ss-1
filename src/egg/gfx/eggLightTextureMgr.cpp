@@ -247,7 +247,7 @@ void LightTextureManager::drawAndCaptureTexture(f32 ox, f32 oy, f32 sx, f32 sy) 
         StateGX::GXSetScissor_(x1, y1, x2, y2);
         StateGX::GXSetScissorBoxOffset_(0, 0);
         nw4r::math::MTX34 identity;
-        PSMTXIdentity(identity);
+        MTXIdentity(identity);
 
         DrawGX::BeginDrawScreen(1, 1, 0);
         DrawGX::SetBlendMode(DrawGX::BLEND_14);

@@ -76,7 +76,7 @@ void PostEffectBlur::setMaterialMulti(u8 kernelIdx, u8 p2, f32 f1, f32 f2) {
             0.0f, 0.0f,     0.0f, 0.0f
             // clang-format on
         );
-        PSMTXConcat(m, mtx, m);
+        MTXConcat(m, mtx, m);
         GXLoadTexMtxImm(m, texMtxId, GX_MTX2x4);
         unk_00_scale++;
     }

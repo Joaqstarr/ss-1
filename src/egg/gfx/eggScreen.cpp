@@ -264,7 +264,7 @@ bool Screen::IsChangeEfb() const {
 }
 
 void Screen::CalcMatrixForDrawQuad(math::MTX34 *mtx, f32 x, f32 y, f32 sx, f32 sy) const {
-    PSMTXScale(*mtx, sx, sy, 1.0f);
+    MTXScale(*mtx, sx, sy, 1.0f);
 
     mtx->m[0][3] = x;
     mtx->m[1][3] = mCanvasMode == CANVASMODE_0 ? y - sy : y;

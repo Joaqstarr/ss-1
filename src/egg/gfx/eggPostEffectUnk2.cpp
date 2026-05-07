@@ -61,8 +61,8 @@ void PostEffectUnk2::draw(f32 width, f32 height) {
     GXSetVtxDesc(GX_VA_TEX1, GX_DIRECT);
 
     nw4r::math::MTX34 mtx;
-    PSMTXScale(mtx, width * mScaleX, height * mScaleY, 1.0f);
-    PSMTXTransApply(mtx, mtx, mOffsetX, mOffsetY, 0.0f);
+    MTXScale(mtx, width * mScaleX, height * mScaleY, 1.0f);
+    MTXTransApply(mtx, mtx, mOffsetX, mOffsetY, 0.0f);
     GXLoadPosMtxImm(mtx, 0);
 
     static const f32 floats1[2][2] = {

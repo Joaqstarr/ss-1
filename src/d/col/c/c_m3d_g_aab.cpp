@@ -27,8 +27,8 @@ void cM3dGAab::SetMax(const mVec3_c &max) {
 }
 
 void cM3dGAab::CalcCenter(mVec3_c &center) const {
-    PSVECAdd(mMin, mMax, center);
-    PSVECScale(center, center, 0.5f);
+    VECAdd(mMin, mMax, center);
+    VECScale(center, center, 0.5f);
 }
 
 void cM3dGAab::PlusR(f32 r) {

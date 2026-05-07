@@ -114,18 +114,18 @@ void LightObject::CalcView(nw4r::math::MTX34 const &viewMtx) {
     } else {
         if (getField0x3C() == 1) {
             nw4r::math::VEC3 tmp(-viewMtx._20, -viewMtx._21, -viewMtx._22);
-            if (PSVECMag(tmp) > 0.0f) {
+            if (VECMag(tmp) > 0.0f) {
                 nw4r::math::VEC3 angle;
                 C_VECHalfAngle(mDir, tmp, angle);
                 nw4r::math::VEC3Scale(&field_0x6C, &angle, -1.0f);
-                PSVECNormalize(field_0x6C, field_0x6C);
+                VECNormalize(field_0x6C, field_0x6C);
             } else {
                 field_0x6C.x = field_0x6C.y = 0.0f;
                 field_0x6C.z = 1.0f;
             }
         }
-        PSMTXMultVec(viewMtx, mPos, mViewPos);
-        PSMTXMultVec(viewMtx, mAt, mViewAt);
+        MTXMultVec(viewMtx, mPos, mViewPos);
+        MTXMultVec(viewMtx, mAt, mViewAt);
         nw4r::math::VEC3TransformNormal(&field_0x94, &viewMtx, &field_0x6C);
     }
 }
@@ -238,12 +238,12 @@ void LightObject::CopyToG3D_View(nw4r::g3d::LightObj &g3dObj, const nw4r::math::
                 break;
             }
             case 0: {
-                PSMTXMultVec(viewMtx, mViewPos, pos);
+                MTXMultVec(viewMtx, mViewPos, pos);
                 dir.x = dir.y = dir.z = 0.0f;
                 break;
             }
             case 2: {
-                PSMTXMultVec(viewMtx, mViewPos, pos);
+                MTXMultVec(viewMtx, mViewPos, pos);
                 nw4r::math::VEC3TransformNormal(&dir, &viewMtx, &field_0x94);
                 break;
             }

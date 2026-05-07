@@ -6,11 +6,11 @@
 namespace EGG {
 
 void Matrix34f::inverseTo(Matrix34f &to) const {
-    PSMTXInverse(m, to.m);
+    MTXInverse(m, to.m);
 }
 
 void Matrix34f::inverseTransposeTo(Matrix34f &to) const {
-    PSMTXInvXpose(m, to.m);
+    MTXInvXpose(m, to.m);
 }
 
 void Matrix34f::makeIdentity() {
@@ -357,7 +357,7 @@ void Matrix34f::loadPosMtx(u32 posMtxId) {
 }
 
 void Matrix34f::multiplyTo(const Matrix34f &m2, Matrix34f &to) const {
-    PSMTXConcat(m, m2.m, to.m);
+    MTXConcat(m, m2.m, to.m);
 }
 
 void Matrix34f::dump() {}

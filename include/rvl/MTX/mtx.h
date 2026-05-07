@@ -31,6 +31,7 @@ typedef struct Quaternion {
 #define MTXIdentity PSMTXIdentity
 #define MTXCopy PSMTXCopy
 #define MTXConcat PSMTXConcat
+#define MTXConcatArray PSMTXConcatArray
 #define MTXInverse PSMTXInverse
 #define MTXTranspose PSMTXTranspose
 #define MTXInverse PSMTXInverse

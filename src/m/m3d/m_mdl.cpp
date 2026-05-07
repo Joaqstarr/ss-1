@@ -57,7 +57,7 @@ void mdl_c::mdlCallback_c::ExecCallbackA(
             tmp.x = result->rt._03;
             tmp.y = result->rt._13;
             tmp.z = result->rt._23;
-            PSMTXQuat(result->rt, q1);
+            MTXQuat(result->rt, q1);
             result->rt._03 = tmp.x;
             result->rt._13 = tmp.y;
             result->rt._23 = tmp.z;
@@ -121,7 +121,7 @@ bool mdl_c::mdlCallback_c::create(nw4r::g3d::ResMdl mdl, mAllocator_c *alloc, u3
         node->s.x = 1.0f;
         node->s.y = 1.0f;
         node->s.z = 1.0f;
-        PSMTXIdentity(node->rt);
+        MTXIdentity(node->rt);
         node++;
     }
 

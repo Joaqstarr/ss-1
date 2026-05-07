@@ -50,11 +50,11 @@ void DowsingTarget::reinitialize(DowsingSlot type) {
 void DowsingTarget::getPosition(mVec3_c &position) {
     mMtx_c mtx;
     mMtx_c mtx2;
-    PSMTXTrans(mtx.m, mpActor->mPosition.x, mpActor->mPosition.y, mpActor->mPosition.z);
+    MTXTrans(mtx.m, mpActor->mPosition.x, mpActor->mPosition.y, mpActor->mPosition.z);
     mtx.YrotM(mpActor->mRotation.y);
-    PSMTXScale(mtx2.m, mpActor->mScale.x, mpActor->mScale.y, mpActor->mScale.z);
-    PSMTXConcat(mtx.m, mtx2.m, mtx.m);
-    PSMTXMultVec(mtx.m, mOffset, position);
+    MTXScale(mtx2.m, mpActor->mScale.x, mpActor->mScale.y, mpActor->mScale.z);
+    MTXConcat(mtx.m, mtx2.m, mtx.m);
+    MTXMultVec(mtx.m, mOffset, position);
 }
 
 bool DowsingTarget::hasZeldaDowsing() {

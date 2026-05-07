@@ -176,7 +176,7 @@ int dAcOTowerHandD101_c::actorPostCreate() {
     dAcObjBase_c *ac = dAcObjBase_c::getNextObject(&dAcItem_c::sItemList, nullptr);
     f32 distLimit = 90000.0f;
     while (handClosed && ac != nullptr) {
-        if (PSVECSquareDistance(pos, ac->mPosition) < distLimit) {
+        if (VECSquareDistance(pos, ac->mPosition) < distLimit) {
             handClosed = false;
             mHeldItem.link(static_cast<dAcItem_c *>(ac));
         } else {
@@ -210,7 +210,7 @@ int dAcOTowerHandD101_c::actorExecute() {
     UNKWORD w = link->IfCurrentActionToActor(this, 0x3D);
     bool b = getItem(item);
     if (!b && item->isStateWait()) {
-        f32 dist = PSVECSquareDistance(item->mPosition, link->mPosition);
+        f32 dist = VECSquareDistance(item->mPosition, link->mPosition);
         if (w == 0 && dist < 15625.0f) {
             item->getItemFromBWheelItem();
         } else {
@@ -240,13 +240,13 @@ int dAcOTowerHandD101_c::actorExecute() {
     mMtx_c tmpMtx4;
 
     getLoc1Mtx(tmpMtx2);
-    PSMTXScale(tmpMtx1, newScale.x, newScale.y, newScale.z);
-    PSMTXConcat(tmpMtx2, tmpMtx1, tmpMtx2);
+    MTXScale(tmpMtx1, newScale.x, newScale.y, newScale.z);
+    MTXConcat(tmpMtx2, tmpMtx1, tmpMtx2);
     mLoc1Mtx.copyFrom(tmpMtx2);
 
     getLoc2Mtx(tmpMtx3);
-    PSMTXScale(tmpMtx4, newScale.x, newScale.y, newScale.z);
-    PSMTXConcat(tmpMtx3, tmpMtx4, tmpMtx3);
+    MTXScale(tmpMtx4, newScale.x, newScale.y, newScale.z);
+    MTXConcat(tmpMtx3, tmpMtx4, tmpMtx3);
     mLoc2Mtx.copyFrom(tmpMtx3);
 
     if (mEffects.hasEmitters()) {
@@ -292,13 +292,13 @@ int dAcOTowerHandD101_c::actorExecuteInEvent() {
             mMtx_c tmpMtx4;
 
             getLoc1Mtx(tmpMtx2);
-            PSMTXScale(tmpMtx1, newScale.x, newScale.y, newScale.z);
-            PSMTXConcat(tmpMtx2, tmpMtx1, tmpMtx2);
+            MTXScale(tmpMtx1, newScale.x, newScale.y, newScale.z);
+            MTXConcat(tmpMtx2, tmpMtx1, tmpMtx2);
             mLoc1Mtx.copyFrom(tmpMtx2);
 
             getLoc2Mtx(tmpMtx3);
-            PSMTXScale(tmpMtx4, newScale.x, newScale.y, newScale.z);
-            PSMTXConcat(tmpMtx3, tmpMtx4, tmpMtx3);
+            MTXScale(tmpMtx4, newScale.x, newScale.y, newScale.z);
+            MTXConcat(tmpMtx3, tmpMtx4, tmpMtx3);
             mLoc2Mtx.copyFrom(tmpMtx3);
 
             if (mEffects.hasEmitters()) {
@@ -572,7 +572,7 @@ void dAcOTowerHandD101_c::executeState_RemainOpen() {
     dAcPy_c *link = dAcPy_c::LINK;
     mVec3_c pos;
     getItemPos(pos);
-    f32 linkDistToItem = PSVECSquareDistance(pos, link->mPosition);
+    f32 linkDistToItem = VECSquareDistance(pos, link->mPosition);
     if (EventManager::isInEvent() && getEventStuff().getCurrentEventCommand() == 'wait') {
         return;
     }
@@ -604,7 +604,7 @@ void dAcOTowerHandD101_c::executeState_Close() {
     dAcPy_c *link = dAcPy_c::LINK;
     mVec3_c pos;
     getItemPos(pos);
-    f32 linkDistToItem = PSVECSquareDistance(pos, link->mPosition);
+    f32 linkDistToItem = VECSquareDistance(pos, link->mPosition);
     if (EventManager::isInEvent() && getEventStuff().getCurrentEventCommand() == 'wait') {
         mStateMgr.changeState(StateID_Open);
         return;
@@ -656,7 +656,7 @@ void dAcOTowerHandD101_c::executeState_Open() {
     dAcPy_c *link = dAcPy_c::LINK;
     mVec3_c pos;
     getItemPos(pos);
-    f32 linkDistToItem = PSVECSquareDistance(pos, link->mPosition);
+    f32 linkDistToItem = VECSquareDistance(pos, link->mPosition);
     if (EventManager::isInEvent() && getEventStuff().getCurrentEventCommand() == 'wait') {
         if (mMdl.getAnm().isStop()) {
             mStateMgr.changeState(StateID_RemainOpen);
@@ -714,7 +714,7 @@ void dAcOTowerHandD101_c::executeState_RemainClosed() {
     dAcPy_c *link = dAcPy_c::LINK;
     mVec3_c pos;
     getItemPos(pos);
-    f32 linkDistToItem = PSVECSquareDistance(pos, link->mPosition);
+    f32 linkDistToItem = VECSquareDistance(pos, link->mPosition);
     if (EventManager::isInEvent() && getEventStuff().getCurrentEventCommand() == 'wait') {
         mStateMgr.changeState(StateID_Open);
         return;

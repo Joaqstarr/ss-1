@@ -54,7 +54,7 @@ int dAcBombf_c::actorPostCreate() {
     mMtx_c mtx;
     mtx.ZXYrotS(mRotation.x, mRotation.y, mRotation.z);
     mVec3_c v;
-    PSMTXMultVecSR(mtx, mVec3_c::Ey, v);
+    MTXMultVecSR(mtx, mVec3_c::Ey, v);
     mVec3_c v3 = mPosition + v * 10.0f;
     mVec3_c v4 = mPosition - v * 10.0f;
 
@@ -184,7 +184,7 @@ void dAcBombf_c::executeState_Wait() {
     f32 scaleFactor = mScale.x;
     if (field_0x3D2 == 0 || field_0x3D2 == 2) {
         mVec3_c up;
-        PSMTXMultVecSR(mWorldMtx, mVec3_c::Ey, up);
+        MTXMultVecSR(mWorldMtx, mVec3_c::Ey, up);
         mVec3_c upScaled = up * 30.0f;
         mVec3_c checkPos = mPosition + upScaled;
 

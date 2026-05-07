@@ -117,7 +117,7 @@ void LightManager::CalcView(const nw4r::math::MTX34 &viewMtx, u8 lightObjOffset,
     DCFlushRange(gxObj, CheckedNumLightObjs(mCounts.mNumEggLightObjects) * sizeof(GXLightObj));
     if (root != nullptr) {
         nw4r::math::MTX34 tmp;
-        PSMTXInverse(viewMtx, tmp);
+        MTXInverse(viewMtx, tmp);
         CopyToG3D_View(root, tmp);
     }
 }

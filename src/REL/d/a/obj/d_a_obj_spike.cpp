@@ -35,15 +35,15 @@ int dAcOspike_c::create() {
     updateMatrix();
     mMdl.setLocalMtx(mWorldMtx);
     mVec3_c tmp;
-    PSMTXMultVecSR(mWorldMtx.m, mVec3_c::Ex, tmp);
+    MTXMultVecSR(mWorldMtx.m, mVec3_c::Ex, tmp);
     mCollision.SetAtVec(tmp);
 
     mMtx_c mtx;
     mtx.XrotS(mRotation.x);
     mtx.ZrotM(mRotation.z);
     mVec3_c tmp2, tmp3;
-    PSMTXMultVecSR(mtx.m, sVec1, tmp2);
-    PSMTXMultVecSR(mtx.m, sVec2, tmp3);
+    MTXMultVecSR(mtx.m, sVec1, tmp2);
+    MTXMultVecSR(mtx.m, sVec2, tmp3);
 
     if (tmp2.x > tmp3.x) {
         f32 copy = tmp2.x;

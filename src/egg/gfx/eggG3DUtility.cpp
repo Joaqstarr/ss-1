@@ -66,7 +66,7 @@ void G3DUtility::create(u32 size, Heap *pHeap) {
 
 void G3DUtility::defaultTexMtxFunc(nw4r::math::MTX34 *pMtx, s8 camRef, s8 lightRef) {
     const nw4r::math::MTX34 *mtxPtr = nw4r::g3d::G3DState::GetInvCameraMtxPtr();
-    PSMTXCopy(mtxPtr->m, pMtx->m);
+    MTXCopy(mtxPtr->m, pMtx->m);
 }
 
 bool G3DUtility::setUpLightSet(nw4r::g3d::LightSetting &lightSet, nw4r::g3d::ResAnmScn scn, int refNumber) {

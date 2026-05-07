@@ -277,12 +277,12 @@ void Pane::CalculateMtx(const DrawInfo &drawInfo) {
     this->mMtx._13 = this->mTranslate.y;
     this->mMtx._23 = this->mTranslate.z;
     if (this->mpParent) {
-        PSMTXConcat(this->mpParent->mGlbMtx, this->mMtx, this->mGlbMtx);
+        MTXConcat(this->mpParent->mGlbMtx, this->mMtx, this->mGlbMtx);
     } else {
         if (drawInfo.IsMultipleViewMtxOnDraw()) {
             this->mGlbMtx = this->mMtx;
         } else {
-            PSMTXConcat(drawInfo.GetViewMtx(), this->mMtx, this->mGlbMtx);
+            MTXConcat(drawInfo.GetViewMtx(), this->mMtx, this->mGlbMtx);
         }
     }
 
@@ -446,7 +446,7 @@ void Pane::LoadMtx(const DrawInfo &drawInfo) {
     math::MTX34 mtx;
     math::MTX34 *mtxPtr;
     if (drawInfo.IsMultipleViewMtxOnDraw()) {
-        PSMTXConcat(drawInfo.GetViewMtx(), this->mGlbMtx, mtx);
+        MTXConcat(drawInfo.GetViewMtx(), this->mGlbMtx, mtx);
         mtxPtr = &mtx;
     } else {
         mtxPtr = &this->mGlbMtx;

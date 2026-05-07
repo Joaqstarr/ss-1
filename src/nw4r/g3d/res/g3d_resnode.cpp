@@ -99,7 +99,7 @@ void ResNode::CalcChrAnmResult(ChrAnmResult *pResult) const {
     }
 
     if (r.flags & ResNodeData::FLAG_ROT_ZERO) {
-        PSMTXIdentity(pResult->rt);
+        MTXIdentity(pResult->rt);
         flags |= ChrAnmResult::FLAG_ROT_ZERO;
     } else {
         pResult->rawR = math::VEC3(r.rot);

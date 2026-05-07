@@ -11,9 +11,9 @@ void cM3dGLin::SetStartEnd(const mVec3_c *start, const mVec3_c *end) {
 
 void cM3dGLin::CalcPos(mVec3_c *out, f32 scale) const {
     mVec3_c tmp;
-    PSVECSubtract(mEnd, mStart, tmp);
-    PSVECScale(tmp, tmp, scale);
-    PSVECAdd(tmp, mStart, *out);
+    VECSubtract(mEnd, mStart, tmp);
+    VECScale(tmp, tmp, scale);
+    VECAdd(tmp, mStart, *out);
 }
 
 void cM3dGLin::SetStart(const mVec3_c &start) {

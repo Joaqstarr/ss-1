@@ -886,10 +886,10 @@ void dBgS_MoveBGProc_Typical(
     mMtx_c a;
     if (i_bgw->GetOldInvMtx(&a) != NULL) {
         mVec3_c moveOld;
-        PSMTXMultVec(a, *i_pos, moveOld);
+        MTXMultVec(a, *i_pos, moveOld);
 
         mVec3_c movePos;
-        PSMTXMultVec(i_bgw->mInvMtx, moveOld, movePos);
+        MTXMultVec(i_bgw->mInvMtx, moveOld, movePos);
         *i_pos = movePos;
     }
 }

@@ -250,7 +250,7 @@ bool AttentionManager::playTargetAnim(s32 idx) {
         dAcObjBase_c *actor = pool->getActor(mModels.mCurrentTargetInfoIdx);
         mMtx_c mtx;
         mVec3_c v = pool->mInfos[mModels.mCurrentTargetInfoIdx].field_0x08;
-        PSMTXTrans(mtx, v.x, v.y, v.z);
+        MTXTrans(mtx, v.x, v.y, v.z);
 
         mModels.mMdls->mMdl.setLocalMtx(mtx);
         mModels.mMdls->mMdl.setScale(sHio.field_0x14, sHio.field_0x14, sHio.field_0x14);

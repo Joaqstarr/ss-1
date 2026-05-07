@@ -101,8 +101,8 @@ void PostEffectMaskDOF::draw(f32 width, f32 height) {
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX1, GX_TEX_ST, GX_F32, 0);
     GXSetVtxDesc(GX_VA_TEX1, GX_DIRECT);
     nw4r::math::MTX34 mtx;
-    PSMTXScale(mtx, width * mScaleX, height * mScaleY, 1.f);
-    PSMTXTransApply(mtx, mtx, mOffsetX, mOffsetY, 0.f);
+    MTXScale(mtx, width * mScaleX, height * mScaleY, 1.f);
+    MTXTransApply(mtx, mtx, mOffsetX, mOffsetY, 0.f);
     GXLoadPosMtxImm(mtx, GX_PNMTX0);
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
     GXPosition2u8(0, 0);

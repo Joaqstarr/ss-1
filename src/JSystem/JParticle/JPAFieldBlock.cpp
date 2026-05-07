@@ -127,7 +127,7 @@ void JPAFieldNewton::calc(JPAEmitterWorkData* work, JPAFieldBlock* block, JPABas
 /* 8027C56C-8027C674 276EAC 0108+00 1/0 0/0 0/0 .text
  * prepare__14JPAFieldVortexFP18JPAEmitterWorkDataP13JPAFieldBlock */
 void JPAFieldVortex::prepare(JPAEmitterWorkData* work, JPAFieldBlock* block) {
-    PSMTXMultVecSR(work->mGlobalRot, block->getDir(), field_0x10);
+    MTXMultVecSR(work->mGlobalRot, block->getDir(), field_0x10);
     field_0x10.normalise();
     field_0x1c = block->getPos().z * block->getPos().z;
     field_0x20 = 1.0f / field_0x1c;
