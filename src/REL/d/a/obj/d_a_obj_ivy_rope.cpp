@@ -852,7 +852,7 @@ void dAcOivyRope_c::fn_256_D3D0(mVec3_c &pOut1, mVec3_c &pOut2, s16 param2, bool
     getXZCirclePoint(somevec, swingAngle, something);
 
     mVec3_c somevec2(0.f, -25.f, float0);
-    PSMTXMultVec(m, somevec, somevec2);
+    MTXMultVec(m, somevec, somevec2);
     somevec2 += somevec;
     if (somevec2.z < float0) {
         somevec2.z = float0;
@@ -860,7 +860,7 @@ void dAcOivyRope_c::fn_256_D3D0(mVec3_c &pOut1, mVec3_c &pOut2, s16 param2, bool
 
     // name 100% guess
     mVec3_c swingTarget;
-    PSMTXMultVec(m, somevec, swingTarget);
+    MTXMultVec(m, somevec, swingTarget);
 
     cLib::addCalcPos(&pOut2, swingTarget, 0.3f, 50.f, 1.f);
 

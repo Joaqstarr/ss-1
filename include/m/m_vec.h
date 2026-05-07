@@ -222,7 +222,7 @@ public:
     }
 
     f32 distance(const mVec3_c &to) const {
-        return EGG::Math<f32>::sqrt(PSVECSquareDistance(*this, to));
+        return EGG::Math<f32>::sqrt(VECSquareDistance(*this, to));
     }
     f32 squareDistance(const mVec3_c &to) const {
         return VEC3DistSq(*this, to);
@@ -275,11 +275,6 @@ public:
 
     f32 angle(const mVec3_c &other) const {
         return EGG::Vector3f::angle(other);
-    }
-
-    void offsetWithAngle(s16 yRot, f32 scale) {
-        this->x += nw4r::math::SinIdx(yRot) * scale;
-        this->z += nw4r::math::CosIdx(yRot) * scale;
     }
 
     static mVec3_c Zero;

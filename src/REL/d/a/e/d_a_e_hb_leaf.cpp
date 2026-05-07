@@ -75,8 +75,8 @@ int dAcEhb_leaf_c::actorExecute() {
     updateMatrix();
     if (mType != 0) {
         Mtx m;
-        PSMTXScale(m, mTimeAreaStruct.field_0x00, mTimeAreaStruct.field_0x00, mTimeAreaStruct.field_0x00);
-        PSMTXConcat(mWorldMtx.m, m, mWorldMtx.m);
+        MTXScale(m, mTimeAreaStruct.field_0x00, mTimeAreaStruct.field_0x00, mTimeAreaStruct.field_0x00);
+        MTXConcat(mWorldMtx.m, m, mWorldMtx.m);
     }
     mModel.getModel().setLocalMtx(mWorldMtx);
     mModel.getModel().calc(false);

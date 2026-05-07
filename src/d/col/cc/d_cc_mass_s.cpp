@@ -176,13 +176,13 @@ u32 dCcMassS_Mng::Chk(mVec3_c *p_xyz, dAcObjBase_c **p_actor, dCcMassS_HitInf *p
 
                 if (field_0x3A8 & 0x10) {
                     mVec3_c vec;
-                    PSVECSubtract((*p_actor)->getPosition(), *p_xyz, vec);
+                    VECSubtract((*p_actor)->getPosition(), *p_xyz, vec);
                     vec.y = 0;
-                    f32 vecMag = PSVECMag(vec);
+                    f32 vecMag = VECMag(vec);
                     if (cM3d_IsZero(vecMag)) {
                         vec.x = 1;
                     } else {
-                        PSVECScale(vec, vec, f / vecMag);
+                        VECScale(vec, vec, f / vecMag);
                     }
                     obj->GetStts()->PlusCcMove(vec.x, vec.y, vec.z);
                 }
@@ -208,7 +208,7 @@ u32 dCcMassS_Mng::Chk(mVec3_c *p_xyz, dAcObjBase_c **p_actor, dCcMassS_HitInf *p
             tmpVec.z = p_xyz->z;
 
             if (mCamTopPos.y < (20.0f + plusH)) {
-                f32 newCamTopDist = PSVECSquareDistance(&tmpVec, *mCpsAttr.GetStartP());
+                f32 newCamTopDist = VECSquareDistance(&tmpVec, *mCpsAttr.GetStartP());
                 if (mCamTopDist > newCamTopDist) {
                     mCamTopDist = newCamTopDist;
                     mCamTopPos = tmpVec;
@@ -216,7 +216,7 @@ u32 dCcMassS_Mng::Chk(mVec3_c *p_xyz, dAcObjBase_c **p_actor, dCcMassS_HitInf *p
             }
 
             if (mCamBottomPos.y < (20.0f + plusH)) {
-                f32 newCamBottomDist = PSVECSquareDistance(&tmpVec, *mCpsAttr.GetEndP());
+                f32 newCamBottomDist = VECSquareDistance(&tmpVec, *mCpsAttr.GetEndP());
                 if (mCamBottomDist > newCamBottomDist) {
                     mCamBottomDist = newCamBottomDist;
                     mCamBottomPos = tmpVec;

@@ -78,7 +78,7 @@ void DrawPathLightMap::internalDraw(u16 idx) {
 
                 PostEffectBase::setProjection(GetScreen());
 
-                PSMTXScale(forDL, GetScreen().GetWidth(), GetScreen().GetHeight(), 1.0f);
+                MTXScale(forDL, GetScreen().GetWidth(), GetScreen().GetHeight(), 1.0f);
 
                 mpTextureBuffer_0x30->load(GX_TEXMAP0);
                 DrawGX::BeginDrawScreen(true, true, false);
@@ -113,7 +113,7 @@ void DrawPathLightMap::internalDraw(u16 idx) {
 
                     nw4r::math::MTX34 forDL;
                     PostEffectBase::setProjection(GetScreen());
-                    PSMTXScale(forDL, GetScreen().GetWidth(), GetScreen().GetHeight(), 1.0f);
+                    MTXScale(forDL, GetScreen().GetWidth(), GetScreen().GetHeight(), 1.0f);
 
                     GXColor tevColor = {0xFF, 0xFF, 0xFF, mAlpha};
 

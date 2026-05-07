@@ -72,8 +72,8 @@ static void DrawCircleYPolygonFan(const nw4r::math::MTX34 &mtx, f32 f, u16 numSe
 
     int seg = numSegments + 1;
 
-    PSMTXMultVec(mtx, v1, v1);
-    PSMTXMultVec(mtx, v2, v2);
+    MTXMultVec(mtx, v1, v1);
+    MTXMultVec(mtx, v2, v2);
 
     GXBegin(GX_TRIANGLEFAN, GX_VTXFMT0, seg + 1);
 
@@ -86,7 +86,7 @@ static void DrawCircleYPolygonFan(const nw4r::math::MTX34 &mtx, f32 f, u16 numSe
         nw4r::math::VEC3 v3(
             0.5f * nw4r::math::SinRad(signedStepSize * i), 0.0f, 0.5f * nw4r::math::CosRad(signedStepSize * i)
         );
-        PSMTXMultVec(mtx, v3, v3);
+        MTXMultVec(mtx, v3, v3);
         GXPosition3f32(v3.x, v3.y, v3.z);
 
         nw4r::math::VEC3 v4(
@@ -98,15 +98,15 @@ static void DrawCircleYPolygonFan(const nw4r::math::MTX34 &mtx, f32 f, u16 numSe
             0.5f * nw4r::math::CosRad(signedStepSize * (i + 1))
         );
 
-        PSMTXMultVec(mtx, v4, v4);
-        PSMTXMultVec(mtx, v5, v5);
+        MTXMultVec(mtx, v4, v4);
+        MTXMultVec(mtx, v5, v5);
 
         nw4r::math::VEC3Sub(&v4, &v4, &v2);
         nw4r::math::VEC3Sub(&v5, &v5, &v2);
 
         nw4r::math::VEC3 v6;
-        PSVECCrossProduct(v5, v4, v6);
-        PSVECNormalize(v6, v6);
+        VECCrossProduct(v5, v4, v6);
+        VECNormalize(v6, v6);
 
         GXPosition3f32(v6.x, v6.y, v6.z);
     }
@@ -145,7 +145,7 @@ void DrawGX::Initialize(Heap *pHeap_) {
 
     GXInitTexObj(&CLEAR_Z_TEX_OBJ, s_clear_z_TX, 4, 4, GX_TF_Z24X8, GX_REPEAT, GX_REPEAT, false);
     GXInitTexObjLOD(&CLEAR_Z_TEX_OBJ, GX_NEAR, GX_NEAR, 0.0, 0.0, 0.0, 0, 0, GX_ANISO_1);
-    PSMTXIdentity(s_cameraMtx.m);
+    MTXIdentity(s_cameraMtx.m);
     CreateDisplayList(pHeap);
 }
 
@@ -591,29 +591,29 @@ void DrawGX::CreateDisplayList(EGG::Heap *pHeap) {
                     GXPosition3f32(2.0f * x, 0.0f, 2.0f * z);
                 }
                 nw4r::math::MTX34 mtx;
-                PSMTXTrans(mtx, 0.0f, 0.5f, 0.0f);
+                MTXTrans(mtx, 0.0f, 0.5f, 0.0f);
                 DrawCircleYPolygonFan(mtx, 0.0f, POS_NUM[i - DL_9]);
 
-                PSMTXIdentity(mtx);
-                PSMTXRotRad(mtx, M_PI, 0x7A);
-                PSMTXTransApply(mtx, mtx, 0.0f, -0.5f, 0.0f);
+                MTXIdentity(mtx);
+                MTXRotRad(mtx, M_PI, 0x7A);
+                MTXTransApply(mtx, mtx, 0.0f, -0.5f, 0.0f);
                 DrawCircleYPolygonFan(mtx, 0.0f, POS_NUM[i - DL_9]);
                 break;
             }
             case DL_11:
             case DL_12: {
                 nw4r::math::MTX34 mtx;
-                PSMTXIdentity(mtx);
+                MTXIdentity(mtx);
                 DrawCircleYPolygonFan(mtx, 1.0f, POS_NUM[i - DL_11]);
-                PSMTXRotRad(mtx, M_PI, 0x7A);
+                MTXRotRad(mtx, M_PI, 0x7A);
                 DrawCircleYPolygonFan(mtx, 0.0f, POS_NUM[i - DL_11]);
                 break;
             }
             case DL_7:
             case DL_8: {
                 nw4r::math::MTX34 mtx;
-                PSMTXIdentity(mtx);
-                PSMTXRotRad(mtx, M_PI / 2.0f, 0x78);
+                MTXIdentity(mtx);
+                MTXRotRad(mtx, M_PI / 2.0f, 0x78);
                 DrawCircleYPolygonFan(mtx, 0.0f, POS_NUM[i - DL_7]);
                 break;
             }
@@ -725,7 +725,7 @@ void DrawGX::SetBlendMode(enum Blend mode) {
 void DrawGX::DrawDLWorld(DL dl, const EGG::Matrix34f &mtx, GXColor color) {
     nw4r::math::MTX34 resMtx;
 
-    PSMTXConcat(s_cameraMtx.m, mtx.m, resMtx.m);
+    MTXConcat(s_cameraMtx.m, mtx.m, resMtx.m);
     DrawDL(dl, resMtx, color);
 }
 

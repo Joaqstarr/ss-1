@@ -19,7 +19,7 @@
 #include "rvl/MTX.h" // IWYU pragma: export
 
 static inline void MtxTransMinusXYZ(mMtx_c &mtx, f32 x, f32 y, f32 z) {
-    PSMTXTrans(mtx, -x, -y, -z);
+    MTXTrans(mtx, -x, -y, -z);
 }
 
 mVec3_c cCcD_ShapeAttr::sVirtualCenter = mVec3_c::Zero;
@@ -692,7 +692,7 @@ bool cCcD_TriAttr::GetNVec(const mVec3_c &pnt, mVec3_c *pOut) const {
         *pOut = GetN();
     } else {
         *pOut = GetN();
-        PSVECScale(*pOut, *pOut, -1.0f);
+        VECScale(*pOut, *pOut, -1.0f);
     }
     return true;
 }
@@ -728,8 +728,8 @@ cCcD_UnkAttr::~cCcD_UnkAttr() {}
 bool cCcD_UnkAttr::Calc(const mVec3_c &start, const mVec3_c &end, mVec3_c *pOut) {
     mVec3_c tmp0, tmp1;
     const mMtx_c &inv = mInvMtx;
-    PSMTXMultVec(inv, start, tmp0);
-    PSMTXMultVec(inv, end, tmp1);
+    MTXMultVec(inv, start, tmp0);
+    MTXMultVec(inv, end, tmp1);
     for (int i = 0; i < 3; i++) {
         bool tmp0Min = tmp0(i) < mMin(i);
         bool tmp0Max = tmp0(i) > mMax(i);
@@ -761,7 +761,7 @@ bool cCcD_UnkAttr::Calc(const mVec3_c &start, const mVec3_c &end, mVec3_c *pOut)
             (*pOut)(i) = (tmp0(i) + tmp1(i)) * 0.5f;
         }
     }
-    PSMTXMultVec(mMtx, *pOut, *pOut);
+    MTXMultVec(mMtx, *pOut, *pOut);
     return true;
 }
 
@@ -827,23 +827,23 @@ void cCcD_UnkAttr::CalcAabBox() {
     mVec3_c a;
 
     a = start;
-    PSMTXMultVec(mtx, a, a);
+    MTXMultVec(mtx, a, a);
     mAab.SetMinMax(a);
 
     a = end;
-    PSMTXMultVec(mtx, a, a);
+    MTXMultVec(mtx, a, a);
     mAab.SetMinMax(a);
 
     a.x = start.x;
     a.y = start.y;
     a.z = end.z;
-    PSMTXMultVec(mtx, a, a);
+    MTXMultVec(mtx, a, a);
     mAab.SetMinMax(a);
 
     a.x = end.x;
     a.y = end.y;
     a.z = start.z;
-    PSMTXMultVec(mtx, a, a);
+    MTXMultVec(mtx, a, a);
     mAab.SetMinMax(a);
 }
 
@@ -988,18 +988,18 @@ bool cCcD_CpsAttr::Calc(const mVec3_c &start, const mVec3_c &end, mVec3_c *pOut)
         }
         bInverse = false;
     } else {
-        PSMTXTrans(mtx0, startRef.x, startRef.y, startRef.z);
+        MTXTrans(mtx0, startRef.x, startRef.y, startRef.z);
         mtx0.XrotM(mAng::atan2s(-dist, tmp0.y));
         mtx0.YrotM(mAng::atan2s(-tmp0.x, tmp0.z));
 
         mMtx_c mtx1;
 
         MtxTransMinusXYZ(mtx1, startRef.x, startRef.y, startRef.z);
-        PSMTXConcat(mtx0, mtx1, mtx0);
-        PSMTXMultVec(mtx0, start, tmp1);
-        PSMTXMultVec(mtx0, end, tmp2);
+        MTXConcat(mtx0, mtx1, mtx0);
+        MTXMultVec(mtx0, start, tmp1);
+        MTXMultVec(mtx0, end, tmp2);
         tmp3 = GetStart();
-        PSMTXMultVec(mtx0, GetEnd(), tmp4);
+        MTXMultVec(mtx0, GetEnd(), tmp4);
         bInverse = true;
     }
     tmp3.y -= GetR() * 0.5f;
@@ -1007,8 +1007,8 @@ bool cCcD_CpsAttr::Calc(const mVec3_c &start, const mVec3_c &end, mVec3_c *pOut)
     cyl.SetC(tmp3, GetR(), tmp4.y - tmp3.y);
     CalcCyl(cyl, tmp1, tmp2, pOut);
     if (bInverse) {
-        PSMTXInverse(mtx0, mtx0);
-        PSMTXMultVec(mtx0, *pOut, *pOut);
+        MTXInverse(mtx0, mtx0);
+        MTXMultVec(mtx0, *pOut, *pOut);
     }
     return true;
 }
@@ -1111,31 +1111,31 @@ void cCcD_CpsAttr::CalcAabBox() {
 
 bool cCcD_CpsAttr::GetNVec(const mVec3_c &param0, mVec3_c *pOut) const {
     mVec3_c tmp1;
-    PSVECSubtract(GetEnd(), GetStart(), tmp1);
-    f32 sqMag = PSVECDotProduct(tmp1, tmp1);
+    VECSubtract(GetEnd(), GetStart(), tmp1);
+    f32 sqMag = VECDotProduct(tmp1, tmp1);
     if (cM3d_IsZero(sqMag)) {
         return false;
     }
 
     mVec3_c tmp2;
-    PSVECSubtract(param0, GetStart(), tmp2);
-    f32 sqDist = PSVECDotProduct(tmp2, tmp1) / sqMag;
+    VECSubtract(param0, GetStart(), tmp2);
+    f32 sqDist = VECDotProduct(tmp2, tmp1) / sqMag;
     mVec3_c tmp3;
     if (sqDist < 0.f) {
         tmp3 = GetStart();
     } else if (sqDist > 1.f) {
         tmp3 = GetEnd();
     } else {
-        PSVECScale(tmp1, tmp1, sqDist);
-        PSVECAdd(tmp1, GetStart(), tmp3);
+        VECScale(tmp1, tmp1, sqDist);
+        VECAdd(tmp1, GetStart(), tmp3);
     }
 
-    PSVECSubtract(param0, tmp3, *pOut);
-    if (cM3d_IsZero(PSVECMag(*pOut))) {
+    VECSubtract(param0, tmp3, *pOut);
+    if (cM3d_IsZero(VECMag(*pOut))) {
         pOut->set(0.f, 0.f, 0.f);
         return false;
     } else {
-        PSVECNormalize(*pOut, *pOut);
+        VECNormalize(*pOut, *pOut);
         return true;
     }
 }
@@ -1266,12 +1266,12 @@ bool cCcD_CylAttr::GetNVec(const mVec3_c &param0, mVec3_c *pOut) const {
         vec = GetC();
         vec.y = param0.y;
     }
-    PSVECSubtract(param0, vec, *pOut);
-    if (cM3d_IsZero(PSVECMag(*pOut))) {
+    VECSubtract(param0, vec, *pOut);
+    if (cM3d_IsZero(VECMag(*pOut))) {
         pOut->set(0.f, 0.f, 0.f);
         return false;
     } else {
-        PSVECNormalize(*pOut, *pOut);
+        VECNormalize(*pOut, *pOut);
         return true;
     }
 }
@@ -1393,11 +1393,11 @@ bool cCcD_SphAttr::GetNVec(const mVec3_c &param0, mVec3_c *param1) const {
     param1->x = param0.x - GetC().x;
     param1->y = param0.y - GetC().y;
     param1->z = param0.z - GetC().z;
-    if (cM3d_IsZero(PSVECMag(*param1))) {
+    if (cM3d_IsZero(VECMag(*param1))) {
         param1->set(0.0f, 0.0f, 0.0f);
         return false;
     } else {
-        PSVECNormalize(*param1, *param1);
+        VECNormalize(*param1, *param1);
         return true;
     }
 }

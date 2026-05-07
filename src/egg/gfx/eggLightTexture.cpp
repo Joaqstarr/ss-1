@@ -519,7 +519,7 @@ void LightTexture::debugDraw(int i) {
     fn_804AC0A0(i, &u1, &u2);
     load(GX_TEXMAP0);
     nw4r::math::MTX34 mtx;
-    PSMTXScale(mtx, sTexWidth, sTexHeight, 1.0f);
+    MTXScale(mtx, sTexWidth, sTexHeight, 1.0f);
 
     mtx._03 = u1;
     mtx._13 = sDrawHeight - (u2 + sTexHeight);

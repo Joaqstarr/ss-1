@@ -9,7 +9,7 @@ namespace lyt {
 // __ct__Q34nw4r3lyt8DrawInfoFv
 DrawInfo::DrawInfo() : mViewRect(), mScale(1.0f, 1.0f), mGlobalAlpha(1.0f) {
     memset(&mFlags, 0, 1);
-    PSMTXIdentity(mViewMtx);
+    MTXIdentity(mViewMtx);
 }
 
 // __dt__Q34nw4r3lyt8DrawInfoFv

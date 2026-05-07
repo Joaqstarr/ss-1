@@ -96,7 +96,7 @@ void ScreenEffectBlur::fn_804B32B0() {
 
         if (field_0x0C & 1) {
             nw4r::math::MTX34 m;
-            PSMTXScale(m, sizeY, sizeY, 1.f);
+            MTXScale(m, sizeY, sizeY, 1.f);
             pTex0->load(GX_TEXMAP0);
             DrawGX::BeginDrawScreen(true, true, false);
             DrawGX::SetBlendMode(DrawGX::BLEND_14);
@@ -114,7 +114,7 @@ void ScreenEffectBlur::fn_804B3710() {
         // Have to perform a float -> u16 -> float round trip here...
         u16 sizeY = sScreen.GetSize().y;
         u16 sizeX = sScreen.GetSize().x;
-        PSMTXScale(mtx, sizeX, sizeY, 0.0f);
+        MTXScale(mtx, sizeX, sizeY, 0.0f);
         mpCpuTexture->load(GX_TEXMAP0);
         DrawGX::BeginDrawScreen(true, true, true);
         GXSetTevKColor(GX_KCOLOR0, field_0x28);

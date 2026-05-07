@@ -42,7 +42,7 @@ int dAcObjBirdSp_c::actorExecute() {
         mVec3_c posChange(0, -0.2, 1.0);
         mMtx_c matrix;
         matrix.ZXYrotS(mRotation);
-        PSMTXMultVec(matrix.m, posChange, posChange);
+        MTXMultVec(matrix.m, posChange, posChange);
 
         f32 angle = (mPosition - dBird_c::getInstance()->mPosition).dot(posChange);
         if (angle < 0.0f) {

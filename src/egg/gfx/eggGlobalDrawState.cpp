@@ -19,7 +19,7 @@ GlobalDrawState sState;
 void GlobalDrawState::beginDrawView(u16 cameraId, const nw4r::math::MTX34 &mtx, const Screen &screen) {
     spScreen = &screen;
     sCameraId = cameraId;
-    PSMTXCopy(mtx, sMtx);
+    MTXCopy(mtx, sMtx);
     StateEfb::Clean();
 }
 

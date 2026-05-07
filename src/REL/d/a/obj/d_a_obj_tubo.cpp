@@ -681,7 +681,7 @@ mVec3_c dAcOtubo_c::getCenter() const {
     mMtx_c m;
     m.ZXYrotS(mRotation.x, mRotation.y, mRotation.z);
     mVec3_c dir;
-    PSMTXMultVecSR(m, mVec3_c::Ey, dir);
+    MTXMultVecSR(m, mVec3_c::Ey, dir);
 
     return mPosition + dir * 28.f;
 }

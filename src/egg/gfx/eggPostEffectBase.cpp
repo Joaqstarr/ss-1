@@ -43,7 +43,7 @@ void PostEffectBase::setVtxState() {
 
 void PostEffectBase::drawScreenInternal(f32 offsetX, f32 offsetY, f32 width, f32 height) {
     nw4r::math::MTX34 mtx;
-    PSMTXScale(mtx, width, height, 1.0f);
+    MTXScale(mtx, width, height, 1.0f);
     mtx._03 = offsetX;
     mtx._13 = offsetY;
     mtx._23 = 0.0f;

@@ -35,7 +35,7 @@ int dAcODecoB_c::doDelete() {
 
 int dAcODecoB_c::actorExecute() {
     mStateMgr.executeState();
-    PSMTXTrans(mWorldMtx, mPosition.x, mPosition.y, mPosition.z);
+    MTXTrans(mWorldMtx, mPosition.x, mPosition.y, mPosition.z);
     mWorldMtx.ZXYrotM(mRotation);
     mMdl.setLocalMtx(mWorldMtx);
     return SUCCEEDED;

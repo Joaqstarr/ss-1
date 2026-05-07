@@ -16,7 +16,7 @@ cCcD_ShapeAttr *dCcD_Cps::GetShapeAttr() {
 }
 
 void dCcD_Cps::unknownCalc() {
-    PSVECSubtract(mEnd, mStart, mAt.mVec);
+    VECSubtract(mEnd, mStart, mAt.mVec);
 }
 
 dCcD_Tri::dCcD_Tri() {}

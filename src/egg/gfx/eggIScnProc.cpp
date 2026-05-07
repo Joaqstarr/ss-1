@@ -27,7 +27,7 @@ void IScnProc::createScnProc(u16 procNum, MEMAllocator *pAllocator) {
     mNumScnProc = procNum;
     mpDataSet = new ProcData[mNumScnProc];
     nw4r::math::MTX34 mtx;
-    PSMTXIdentity(mtx);
+    MTXIdentity(mtx);
 
     for (u16 i = 0; i < getNumScnProc(); i++) {
         u32 sp8;

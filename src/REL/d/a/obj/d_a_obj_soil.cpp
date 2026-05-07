@@ -11,6 +11,7 @@
 #include "d/d_camera.h"
 #include "d/d_sc_game.h"
 #include "d/d_stage_mgr.h"
+#include "d/d_vec.h"
 #include "d/flag/sceneflag_manager.h"
 #include "d/snd/d_snd_small_effect_mgr.h"
 #include "d/t/d_t_insect.h"
@@ -476,7 +477,8 @@ void dAcOsoil_c::giveItemFinal() {
 
 void dAcOsoil_c::calcItemAndInsectSpawnPos() {
     mItemAndInsectSpawnPos = mPosition;
-    mItemAndInsectSpawnPos.offsetWithAngle(dAcPy_c::LINK->getRotation().y, 30.f);
+    // TODO not sure about this s16 cast
+    getXZCirclePoint(mItemAndInsectSpawnPos, (s16)dAcPy_c::LINK->getRotation().y, 30.f);
 }
 
 void dAcOsoil_c::fn_255_1A50() {

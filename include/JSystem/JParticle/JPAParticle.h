@@ -27,22 +27,24 @@ public:
     bool canCreateChild(JPAEmitterWorkData*);
     f32 getWidth(JPABaseEmitter const*) const;
     f32 getHeight(JPABaseEmitter const*) const;
-    int getAge() { return mAge; }
+    int getAge() const { return mAge; }
     void setOffsetPosition(const EGG::Vector3f& pos) { mOffsetPosition.set(pos); }
     void setOffsetPosition(f32 x, f32 y, f32 z) { mOffsetPosition.set(x, y, z); }
     void getOffsetPosition(EGG::Vector3f& pos) { pos.set(mOffsetPosition); }
-    s16 getRotateAngle() const { return mRotateAngle; }
-    void getGlobalPosition(EGG::Vector3f& pos) const { pos.set(mPosition); }
+    void getOffsetPosition(EGG::Vector3f* pos) const { pos->set(mOffsetPosition); }
+    u16 getRotateAngle() const { return mRotateAngle; }
+    void getGlobalPosition(EGG::Vector3f* pos) const { pos->set(mPosition); }
     f32 getParticleScaleX() const { return mParticleScaleX; }
     f32 getParticleScaleY() const { return mParticleScaleY; }
     void setStatus(u32 flag) { mStatus |= flag; }
-    u32 checkStatus(u32 flag) { return mStatus & flag; }
+    u32 checkStatus(u32 flag) const { return mStatus & flag; }
     void initStatus(u32 status) { mStatus = status; }
     void setInvisibleParticleFlag() { setStatus(8); }
     void setDeleteParticleFlag() { setStatus(2); }
-    void getVelVec(EGG::Vector3f& vec) const { vec.set(mVelocity); }
-    void getLocalPosition(EGG::Vector3f& vec) const { vec.set(mLocalPosition); }
+    void getVelVec(EGG::Vector3f* vec) const { vec->set(mVelocity); }
+    void getLocalPosition(EGG::Vector3f* vec) const { vec->set(mLocalPosition); }
     void getBaseAxis(EGG::Vector3f& vec) const { vec.set(mBaseAxis); }
+    void getBaseAxis(EGG::Vector3f* vec) const { vec->set(mBaseAxis); }
 
 public:
     /* 0x00 */ EGG::Vector3f mPosition;

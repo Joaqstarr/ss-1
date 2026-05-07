@@ -60,12 +60,12 @@ int dAcOPoolCock_c::actorExecute() {
     mMtx_c tmp2;
 
     mVec3_c translation = mOpenDirection * mOpenProgress;
-    PSMTXTrans(tmp1, translation.x, translation.y, translation.z);
-    PSMTXConcat(mdl1Transform, tmp1, mdl1Transform);
+    MTXTrans(tmp1, translation.x, translation.y, translation.z);
+    MTXConcat(mdl1Transform, tmp1, mdl1Transform);
 
     mVec3_c translation2 = -translation;
-    PSMTXTrans(tmp2, translation2.x, translation2.y, translation2.z);
-    PSMTXConcat(mdl2Transform, tmp2, mdl2Transform);
+    MTXTrans(tmp2, translation2.x, translation2.y, translation2.z);
+    MTXConcat(mdl2Transform, tmp2, mdl2Transform);
 
     mdl2Transform.YrotM(-0x8000);
     mModels[0].setLocalMtx(mdl1Transform);

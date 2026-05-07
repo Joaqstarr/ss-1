@@ -49,9 +49,9 @@ bool dBgWTime::GetTriPnt(cBgS_PolyInfo const &info, mVec3_c *pA, mVec3_c *pB, mV
     pB->set(1.f, 0.f, -1.f);
     pC->set(-1.f, 0.f, -1.f);
 
-    PSMTXMultVec(mtx, *pA, *pA);
-    PSMTXMultVec(mtx, *pB, *pB);
-    PSMTXMultVec(mtx, *pC, *pC);
+    MTXMultVec(mtx, *pA, *pA);
+    MTXMultVec(mtx, *pB, *pB);
+    MTXMultVec(mtx, *pC, *pC);
 
     *pA += info.GetField0x20();
     *pB += info.GetField0x20();

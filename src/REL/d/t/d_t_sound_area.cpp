@@ -23,9 +23,9 @@ int dTgSndAr_c::create() {
 
     switch (getTypeFromParams()) {
         case 0:
-            PSMTXTrans(mtx.m, mPosition.x, mPosition.y, mPosition.z);
+            MTXTrans(mtx.m, mPosition.x, mPosition.y, mPosition.z);
             mtx.YrotM(mRotation.y);
-            PSMTXInverse(mtx.m, mtx.m);
+            MTXInverse(mtx.m, mtx.m);
             break;
         case 3: mRail.initWithPathIndex(mParams >> 8 & 0xFF, mRoomID, 0); break;
     }
@@ -83,7 +83,7 @@ inline bool inRange(f32 val, f32 tolerance) {
 // Box
 bool dTgSndAr_c::checkAlg0(const mVec3_c &pos) {
     mVec3_c c2 = pos;
-    PSMTXMultVec(mtx.m, c2, c2);
+    MTXMultVec(mtx.m, c2, c2);
     f32 sxLower = -50.0f * mScale.x;
     f32 sxUpper = 50.0f * mScale.x;
     f32 syLower = 0.0f;
@@ -102,7 +102,7 @@ bool dTgSndAr_c::checkAlg0(const mVec3_c &pos) {
 bool dTgSndAr_c::checkAlg1(const mVec3_c &pos) {
     f32 tgtDist = mScale.x * 100.0f;
     f32 tgtDist2 = tgtDist * tgtDist;
-    return PSVECSquareDistance(mPosition, pos) < tgtDist2;
+    return VECSquareDistance(mPosition, pos) < tgtDist2;
 }
 
 // Cylinder
@@ -152,11 +152,11 @@ bool dTgSndAr_c::checkAlg3(const mVec3_c &pos) {
         return d < radius;
     } else {
         // Otherwise check if we are within the spheres around the endpoints
-        f32 distSq = PSVECSquareDistance(unk.GetStart(), pos);
+        f32 distSq = VECSquareDistance(unk.GetStart(), pos);
         if (distSq < radius) {
             return true;
         } else {
-            distSq = PSVECSquareDistance(unk.GetEnd(), pos);
+            distSq = VECSquareDistance(unk.GetEnd(), pos);
             return distSq < radius;
         }
     }

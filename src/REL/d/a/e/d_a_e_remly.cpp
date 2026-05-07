@@ -1148,7 +1148,7 @@ void dAcEremly_c::executeState_Fly() {
         mSomeCounter++;
         mVec3_c v(0.f, 0.f, 0.f);
 
-        v.offsetWithAngle(a, -10.f + _weird_zero);
+        getXZCirclePoint(v, a, -10.f + _weird_zero);
 
         field_0xAF8.set(v);
     }

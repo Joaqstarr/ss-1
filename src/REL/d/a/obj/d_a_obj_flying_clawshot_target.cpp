@@ -85,7 +85,7 @@ int dAcOFlyingClawshotTarget_c::actorExecute() {
     dAcPy_c *player = dAcPy_c::LINK;
 
     mVec3_c markPoint;
-    PSMTXMultVec(mWorldMtx, mMarkPoint, markPoint);
+    MTXMultVec(mWorldMtx, mMarkPoint, markPoint);
 
     f32 dist_to = markPoint.squareDistance(player->mPosition);
 

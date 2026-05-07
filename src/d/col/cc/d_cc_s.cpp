@@ -159,7 +159,7 @@ void dCcS::SetArea(mMtx_c *pMtx) {
     // non-match: Huh
     mAreas[mAreaCount].mInv = mAreas[mAreaCount].mMtx = *pMtx;
 
-    PSMTXInverse(mAreas[mAreaCount].mInv, mAreas[mAreaCount].mInv);
+    MTXInverse(mAreas[mAreaCount].mInv, mAreas[mAreaCount].mInv);
     mAreaCount++;
 }
 

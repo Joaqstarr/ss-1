@@ -184,7 +184,7 @@ void StateEfb::popWorkBuffer(bool b, u32 userData) {
                 StateGX::GXSetScissorBoxOffset_(0, 0);
 
                 nw4r::math::MTX34 mtx;
-                PSMTXScale(mtx, parentScreen.GetSize().x, parentScreen.GetSize().y, 1.0f);
+                MTXScale(mtx, parentScreen.GetSize().x, parentScreen.GetSize().y, 1.0f);
 
                 DrawGX::BeginDrawScreen(true, isEnableDirtyBufferMode(), false);
                 DrawGX::SetBlendMode(DrawGX::BLEND_14);

@@ -187,10 +187,10 @@ void dTgInsect_c::executeState_Wait() {
                     mInsectRespawnTimers[i]--;
                 } else if (mInsectRespawnTimers[i] == 0) {
                     nw4r::math::MTX34 mtx;
-                    PSMTXTrans(mtx, mPosition.x, mPosition.y, mPosition.z);
+                    MTXTrans(mtx, mPosition.x, mPosition.y, mPosition.z);
                     nw4r::math::MTX34 scale;
-                    PSMTXScale(scale, mScale.x, mScale.y, mScale.x);
-                    PSMTXConcat(mtx, scale, mtx);
+                    MTXScale(scale, mScale.x, mScale.y, mScale.x);
+                    MTXConcat(mtx, scale, mtx);
                     nw4r::math::AABB aabb(-100, 0, -100, 100, 100, 100);
                     aabb.Set(&aabb, &mtx);
                     if (fn_801BB750(&aabb, 10000)) {

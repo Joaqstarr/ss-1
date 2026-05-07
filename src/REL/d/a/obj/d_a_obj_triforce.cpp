@@ -67,8 +67,8 @@ int dAcOtriforce_c::actorExecute() {
     dCcS::GetInstance()->Set(&mCollision);
     updateMatrix();
     Mtx m;
-    PSMTXScale(m, mScale.x, mScale.y, mScale.z);
-    PSMTXConcat(mWorldMtx.m, m, mWorldMtx.m);
+    MTXScale(m, mScale.x, mScale.y, mScale.z);
+    MTXConcat(mWorldMtx.m, m, mWorldMtx.m);
     mMdl.setLocalMtx(mWorldMtx);
     mAnm.play();
     mEffects.holdEffect(PARTICLE_RESOURCE_ID_MAPPING_967_, mWorldMtx, nullptr, nullptr);

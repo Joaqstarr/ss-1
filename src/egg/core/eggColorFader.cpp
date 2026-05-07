@@ -103,7 +103,7 @@ void EGG::ColorFader::draw() {
     GXSetScissor(mStartX, mStartY, getWidth(), getHeight());
 
     Mtx posMtx;
-    PSMTXIdentity(posMtx);
+    MTXIdentity(posMtx);
     GXLoadPosMtxImm(posMtx, 0);
     GXSetCurrentMtx(0);
 
