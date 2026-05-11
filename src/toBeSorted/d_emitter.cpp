@@ -117,7 +117,6 @@ dEmitterBase_c::~dEmitterBase_c() {
 }
 
 JPABaseEmitter *dEmitterBase_c::GetNextEmitter(JPABaseEmitter *head) {
-    // Portability hazard: u32->pointer cast
     return reinterpret_cast<JPABaseEmitter *>(head->getUserWork());
 }
 
@@ -134,8 +133,7 @@ bool dEmitterBase_c::createEmitters(
         );
         if (last != nullptr) {
             if (head != nullptr) {
-                // Portability hazard: pointer->u32 cast
-                head->setUserWork(reinterpret_cast<u32>(last));
+                head->setUserWork(reinterpret_cast<uintptr_t>(last));
             } else {
                 mpEmitterHead = last;
             }

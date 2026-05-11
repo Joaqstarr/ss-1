@@ -448,30 +448,30 @@ inline VEC3 *VEC3Sub(register VEC3 *out, register const VEC3 *a, register const 
 }
 
 inline VEC3 *VEC3Cross(VEC3 *out, const VEC3 *a, const VEC3 *b) {
-    PSVECCrossProduct(*a, *b, *out);
+    VECCrossProduct(*a, *b, *out);
     return out;
 }
 
 inline f32 VEC3DistSq(const VEC3 *a, const VEC3 *b) {
-    return PSVECSquareDistance(*a, *b);
+    return VECSquareDistance(*a, *b);
 }
 
 inline f32 VEC3Len(const VEC3 *vec) {
-    return PSVECMag(*vec);
+    return VECMag(*vec);
 }
 
 inline VEC3 *VEC3Normalize(VEC3 *out, const VEC3 *in) {
-    PSVECNormalize(*in, *out);
+    VECNormalize(*in, *out);
     return out;
 }
 
 inline VEC3 *VEC3Transform(VEC3 *out, const MTX34 *mtx, const VEC3 *vec) {
-    PSMTXMultVec(*mtx, *vec, *out);
+    MTXMultVec(*mtx, *vec, *out);
     return out;
 }
 
 inline VEC3 *VEC3TransformCoord(VEC3 *out, const MTX34 *mtx, const VEC3 *vec) {
-    PSMTXMultVec(*mtx, *vec, *out);
+    MTXMultVec(*mtx, *vec, *out);
     return out;
 }
 
@@ -496,21 +496,21 @@ MTX34 *MTX34RotAxisFIdx(MTX34 *mtx, const VEC3 *axis, f32 fidx);
 MTX34 *MTX34RotXYZFIdx(MTX34 *mtx, f32 fx, f32 fy, f32 fz);
 
 inline MTX34 *MTX34Copy(MTX34 *out, const MTX34 *in) {
-    PSMTXCopy(*in, *out);
+    MTXCopy(*in, *out);
     return out;
 }
 
 inline MTX34 *MTX34Identity(MTX34 *mtx) {
-    PSMTXIdentity(*mtx);
+    MTXIdentity(*mtx);
     return mtx;
 }
 
 inline u32 MTX34Inv(MTX34 *out, const MTX34 *in) {
-    return PSMTXInverse(*in, *out);
+    return MTXInverse(*in, *out);
 }
 
 inline u32 MTX34InvTranspose(MTX34 *pOut, const MTX34 *pIn) {
-    return PSMTXInvXpose(*pIn, *pOut);
+    return MTXInvXpose(*pIn, *pOut);
 }
 
 inline MTX34 *MTX34LookAt(MTX34 *mtx, const VEC3 *pos, const VEC3 *up, const VEC3 *target) {
@@ -519,12 +519,12 @@ inline MTX34 *MTX34LookAt(MTX34 *mtx, const VEC3 *pos, const VEC3 *up, const VEC
 }
 
 inline MTX34 *MTX34Mult(MTX34 *out, const MTX34 *a, const MTX34 *b) {
-    PSMTXConcat(*a, *b, *out);
+    MTXConcat(*a, *b, *out);
     return out;
 }
 
 inline MTX34 *MTX34MultArray(MTX34 *out, const MTX34 *p1, const MTX34 *src, u32 len) {
-    PSMTXConcatArray(*p1, *src, *out, len);
+    MTXConcatArray(*p1, *src, *out, len);
     return out;
 }
 
@@ -541,7 +541,7 @@ inline MTX34 *MTX34RotXYZRad(MTX34 *mtx, f32 rx, f32 ry, f32 rz) {
 }
 
 inline MTX34 *MTX34Scale(MTX34 *out, const VEC3 *scale, const MTX34 *in) {
-    PSMTXScaleApply(*in, *out, scale->x, scale->y, scale->z);
+    MTXScaleApply(*in, *out, scale->x, scale->y, scale->z);
     return out;
 }
 
@@ -551,7 +551,7 @@ inline QUAT *MTX34ToQUAT(QUAT *quat, const MTX34 *mtx) {
 }
 
 inline MTX34 *MTX34Trans(MTX34 *out, const VEC3 *trans, const MTX34 *in) {
-    PSMTXTransApply(*in, *out, trans->x, trans->y, trans->z);
+    MTXTransApply(*in, *out, trans->x, trans->y, trans->z);
     return out;
 }
 
@@ -569,7 +569,7 @@ MTX44 *MTX44Copy(MTX44 *dst, const MTX44 *src);
  *
  ******************************************************************************/
 inline MTX34 *QUATToMTX34(MTX34 *mtx, const QUAT *quat) {
-    PSMTXQuat(*mtx, *quat);
+    MTXQuat(*mtx, *quat);
     return mtx;
 }
 

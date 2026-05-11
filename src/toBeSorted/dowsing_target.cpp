@@ -50,11 +50,11 @@ void DowsingTarget::reinitialize(DowsingSlot type) {
 void DowsingTarget::getPosition(mVec3_c &position) {
     mMtx_c mtx;
     mMtx_c mtx2;
-    PSMTXTrans(mtx.m, mpActor->mPosition.x, mpActor->mPosition.y, mpActor->mPosition.z);
+    MTXTrans(mtx.m, mpActor->mPosition.x, mpActor->mPosition.y, mpActor->mPosition.z);
     mtx.YrotM(mpActor->mRotation.y);
-    PSMTXScale(mtx2.m, mpActor->mScale.x, mpActor->mScale.y, mpActor->mScale.z);
-    PSMTXConcat(mtx.m, mtx2.m, mtx.m);
-    PSMTXMultVec(mtx.m, mOffset, position);
+    MTXScale(mtx2.m, mpActor->mScale.x, mpActor->mScale.y, mpActor->mScale.z);
+    MTXConcat(mtx.m, mtx2.m, mtx.m);
+    MTXMultVec(mtx.m, mOffset, position);
 }
 
 bool DowsingTarget::hasZeldaDowsing() {
@@ -174,6 +174,7 @@ DowsingTarget *DowsingTarget::getDowsingInfo(
 
         targetDir.normalize();
 
+        // Same code as in d_sword_swing_effect_mgr...
         f32 dot = dwsDir.dot(targetDir);
         dot = cM::minMaxLimit(dot, -1.0f, 1.0f);
         f32 a = 1.0f - dot * dot <= 0.0f ? 0.0f : nw4r::math::FrSqrt(1.0f - dot * dot) * (1.0f - dot * dot);

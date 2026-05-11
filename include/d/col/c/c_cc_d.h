@@ -751,6 +751,13 @@ public:
 
     const mVec3_c &GetAtHitPos() const;
     mVec3_c &GetAtHitPos();
+    const mVec3_c &GetAtHitPosInline() const {
+        return mAt.mHitPos;
+    }
+
+    mVec3_c &GetAtHitPosInline() {
+        return mAt.mHitPos;
+    }
     bool GetAtFlag0x2() const;
     bool GetAtFlag0x4() const;
     bool GetAtFlag0x8() const;
@@ -773,6 +780,9 @@ public:
 
     bool ChkTgAtHitType(u32) const;
     u32 GetTgAtHitType() const;
+    bool ChkAtType(u32 mask) const {
+        return mAt.MskType(mask);
+    }
     bool ChkTgBit14() const;
     u8 GetTgDamage() const;
     u16 GetTgDamageFlags() const;
@@ -836,7 +846,14 @@ public:
     void OffAtGrp(u32 grp) {
         mAt.SetAtFlag(GetAtGrp() & ~grp);
     }
+    void SetTgRpm(u32 f) {
+        mTg.SetRPrm(f);
+    }
+    void SetAtRpm(u32 f) {
+        mAt.SetRPrm(f);
+    }
 
+    // Related to directional attacks?
     void SetTgFlag_0xA(u16 flag) {
         mTg.SetFlag_0xA(flag);
     }
@@ -878,7 +895,9 @@ public:
         return mTg.ChkSet();
     }
 
-    
+    void ClrAtActorInfo() { mAt.ClrActorInfo(); }
+    void ClrTgActorInfo() { mTg.ClrActorInfo(); }
+    void ClrCoActorInfo() { mCo.ClrActorInfo(); }
     bool ChkAtEffCounter() { return mAt.ChkEffCounter(); }
     bool ChkTgEffCounter() { return mTg.ChkEffCounter(); }
     void ClrAtEffCounter() { mAt.ClrEffCounter(); }
@@ -905,7 +924,7 @@ public:
         return mAt.MskSPrm(0x40);
     }
     u32 ChkCoNoCoHitInfSet() const {
-        return mCo.MskSPrm(0x800); 
+        return mCo.MskSPrm(0x800);
     }
 
     // At
@@ -978,8 +997,17 @@ public:
     void OnTgElectric() {
         return mTg.OnSPrm(0x40000);
     }
+    void OnTg_0x8000000() {
+        return mTg.OnSPrm(0x8000000);
+    }
     void ClrTgElectric() {
         return mTg.OffSPrm(0x40000);
+    }
+    void ClrTg_0x10000() {
+        return mTg.OffSPrm(0x10000);
+    }
+    void ClrTg_0x8000000() {
+        return mTg.OffSPrm(0x8000000);
     }
     u32 ChkTgBonk() const {
         return mTg.MskSPrm(0x200000);
@@ -1032,6 +1060,12 @@ public:
     }
     u32 ChkCo_0x40000000() {
         return mCo.MskSPrm(0x40000000);
+    }
+    u32 ChkCo_0x10() {
+        return mCo.MskSPrm(0x10);
+    }
+    u32 ChkCo_0x2() {
+        return mCo.MskSPrm(0x2);
     }
 
     /**

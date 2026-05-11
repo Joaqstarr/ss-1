@@ -26,8 +26,8 @@ void dAcOswMdlCallback_c::timingB(u32 nodeId, nw4r::g3d::WorldMtxManip *manip, n
         mMtx_c mtx1;
         mMtx_c mtx2;
         manip->GetMtx(mtx1);
-        PSMTXTrans(mtx2, mElevation, 0.0f, 0.0f);
-        PSMTXConcat(mtx1, mtx2, mtx1);
+        MTXTrans(mtx2, mElevation, 0.0f, 0.0f);
+        MTXConcat(mtx1, mtx2, mtx1);
         manip->SetMtx(mtx1);
     }
 }
@@ -189,8 +189,8 @@ int dAcOsw_c::actorExecute() {
     updateMatrix();
     field_0x5B8.copyFrom(mWorldMtx);
     mMtx_c tmp;
-    PSMTXTrans(tmp, 0.0f, mButtonCtrl.mElevation, 0.0f);
-    PSMTXConcat(field_0x5B8, tmp, field_0x5B8);
+    MTXTrans(tmp, 0.0f, mButtonCtrl.mElevation, 0.0f);
+    MTXConcat(field_0x5B8, tmp, field_0x5B8);
     mModel.setScale(mScale);
     mModel.setLocalMtx(mWorldMtx);
     mModel.calc(false);

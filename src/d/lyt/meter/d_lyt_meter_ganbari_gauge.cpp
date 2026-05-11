@@ -332,7 +332,7 @@ bool dLytMeterGanbariGauge_c::build(d2d::ResAccIf_c *resAcc) {
     field_0x548 = dLytMeter_HIO_c::sInstance->field_0x1C8;
 
     field_0x558 = 0;
-    field_0x559 = 0;
+    mClefRelated = false;
     field_0x55B = 0;
     mpOwnerPane = nullptr;
     field_0x55A = 0;
@@ -436,7 +436,7 @@ bool dLytMeterGanbariGauge_c::execute() {
         }
     }
 
-    mVec3_c diff = dAcPy_c::GetLink()->mPositionCopy3 - dScGame_c::getCamera(0)->getPositionMaybe();
+    mVec3_c diff = dAcPy_c::GetLink()->mPositionCopy3 - dScGame_c::getCamera(0)->getPosition();
     f32 len = diff.mag();
     mVec3_c v;
     d3d::worldToScreen(v, dAcPy_c::GetLink()->mPositionCopy3);
@@ -483,7 +483,7 @@ bool dLytMeterGanbariGauge_c::execute() {
         angle = 3;
         v2.set(-95.0f, -50.0f);
         scale = 0.9f;
-    } else if (field_0x559 && swimmingRelated()) {
+    } else if (mClefRelated && swimmingRelated()) {
         angle = 1;
         v2.set(-65.0f, 0.0f);
         scale = 1.0f;
@@ -656,8 +656,8 @@ bool dLytMeterGanbariGauge_c::fn_80104760() const {
 }
 
 bool dLytMeterGanbariGauge_c::fn_801047B0() const {
-    if (fn_80081FE0(dScGame_c::getCamera(0)->getField_0xD98(), "mogu") ||
-        fn_80081FE0(dScGame_c::getCamera(0)->getField_0xD98(), "mogu2")) {
+    if (dScGame_c::getCamera(0)->getGameCam1()->isCurrentTrend("mogu") ||
+        dScGame_c::getCamera(0)->getGameCam1()->isCurrentTrend("mogu2")) {
         return true;
     }
     return false;

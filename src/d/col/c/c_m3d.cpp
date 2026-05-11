@@ -169,8 +169,8 @@ bool cM3d_Cross_SphSph(const cM3dGSph &, const cM3dGSph &, VEC3 *) {
 
 void cM3d_CalcSphVsTriCrossPoint(const cM3dGSph &pSph, const cM3dGTri &pTri, VEC3 *pPnt) {
     VEC3 scale, add;
-    PSVECAdd(pTri.mA, pTri.mB, add);
-    PSVECScale(add, scale, 0.5f);
+    VECAdd(pTri.mA, pTri.mB, add);
+    VECScale(add, scale, 0.5f);
     const f32 mag = VEC3DistSq(&scale, &pSph.GetC());
     if (cM3d_IsZero(mag)) {
         *pPnt = pSph.GetC();
@@ -245,7 +245,7 @@ f32 cM3d_lineVsPosSuisenCross(const VEC3 &, const VEC3 &, const VEC3 &, VEC3 *) 
 }
 
 bool cM3d_Normalize(nw4r::math::VEC3 *pPnt) {
-    f32 mag = PSVECMag(*pPnt);
+    f32 mag = VECMag(*pPnt);
     if (cM3d_IsZero(mag)) {
         return true;
     }

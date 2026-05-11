@@ -268,10 +268,10 @@ Simple_c::Simple_c() : Base_c(0x80), mLayout(), mDrawInfo(), mpResAcc(nullptr), 
 void Simple_c::calc() {
     calcBefore();
     nw4r::math::MTX34 mtx;
-    PSMTXIdentity(mtx.m);
+    MTXIdentity(mtx.m);
     // Probably inlines
     mVec3_c v = mVec;
-    PSMTXTransApply(mtx.m, mtx.m, v.x, v.y, v.z);
+    MTXTransApply(mtx.m, mtx.m, v.x, v.y, v.z);
     mDrawInfo.SetViewMtx(mtx);
     calcAfter();
 }

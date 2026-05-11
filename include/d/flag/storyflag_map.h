@@ -427,7 +427,7 @@ enum StoryFlags_e {
     /** [Music Scroll for Tadtones (sets before the collecting, unsets when collecting is done)]
      *  Story Flag #82 (0x0052) - JP 805ACD6B 0x08 / US 805A9AEB 0x08
      */
-    STORYFLAG_82,
+    STORYFLAG_HAS_TADTONE_SCROLL,
 
     /** [Ghirahim 1 defeated (Skyview Spring layer 1 / Skyview Boss Room layer 1)]
      *  Story Flag #83 (0x0053) - JP 805ACD69 0x80 / US 805A9AE9 0x80
@@ -1520,7 +1520,7 @@ enum StoryFlags_e {
     /** [Set when talking to Strich]
      *  Story Flag #300 (0x012C) - JP 805ACD7D 0x40 / US 805A9AFD 0x40
      */
-    STORYFLAG_300,
+    STORYFLAG_TALKED_TO_STRICH,
 
     /** [Kukiel screams]
      *  Story Flag #301 (0x012D) - JP 805ACD7D 0x80 / US 805A9AFD 0x80
@@ -3383,7 +3383,7 @@ enum StoryFlags_e {
     /** [Goddess Statue Opened]
      *  Story Flag #672 (0x02A0) - JP 805ACDA0 0x02 / US 805A9B20 0x02
      */
-    STORYFLAG_672,
+    STORYFLAG_GODDESS_STATUE_ACCESS,
 
     /** [Set when Scrapper picks up Oolo]
      *  Story Flag #673 (0x02A1) - JP 805ACDA0 0x04 / US 805A9B20 0x04

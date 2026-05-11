@@ -434,9 +434,9 @@ void TextBox::SetFont(const ut::Font *pFont) {
 void TextBox::LoadMtx(const DrawInfo &drawInfo) {
     math::MTX34 mtx;
     if (drawInfo.IsMultipleViewMtxOnDraw()) {
-        PSMTXConcat(drawInfo.GetViewMtx(), mGlbMtx, mtx);
+        MTXConcat(drawInfo.GetViewMtx(), mGlbMtx, mtx);
     } else {
-        PSMTXCopy(mGlbMtx, mtx);
+        MTXCopy(mGlbMtx, mtx);
     }
 
     ReverseYAxis(&mtx);

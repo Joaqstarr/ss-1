@@ -222,7 +222,7 @@ public:
     }
 
     f32 distance(const mVec3_c &to) const {
-        return EGG::Math<f32>::sqrt(PSVECSquareDistance(*this, to));
+        return EGG::Math<f32>::sqrt(VECSquareDistance(*this, to));
     }
     f32 squareDistance(const mVec3_c &to) const {
         return VEC3DistSq(*this, to);

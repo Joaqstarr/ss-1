@@ -1,5 +1,6 @@
 #include "d/a/obj/d_a_obj_spike.h"
 
+#include "d/a/obj/d_a_obj_base.h"
 #include "d/col/cc/d_cc_s.h"
 
 SPECIAL_ACTOR_PROFILE(OBJ_SPIKE, dAcOspike_c, fProfile::OBJ_SPIKE, 0x1D9, 0, 2);
@@ -25,9 +26,7 @@ bool dAcOspike_c::createHeap() {
 }
 
 int dAcOspike_c::create() {
-    if (!initAllocatorWork1Heap(-1, "dAcOspike_c::m_allocator", 0x20)) {
-        return FAILED;
-    }
+    CREATE_ALLOCATOR(dAcOspike_c);
 
     mStts.SetDefaultRank();
     mCollision.Set(sCcSrc);
@@ -36,15 +35,15 @@ int dAcOspike_c::create() {
     updateMatrix();
     mMdl.setLocalMtx(mWorldMtx);
     mVec3_c tmp;
-    PSMTXMultVecSR(mWorldMtx.m, mVec3_c::Ex, tmp);
+    MTXMultVecSR(mWorldMtx.m, mVec3_c::Ex, tmp);
     mCollision.SetAtVec(tmp);
 
     mMtx_c mtx;
     mtx.XrotS(mRotation.x);
     mtx.ZrotM(mRotation.z);
     mVec3_c tmp2, tmp3;
-    PSMTXMultVecSR(mtx.m, sVec1, tmp2);
-    PSMTXMultVecSR(mtx.m, sVec2, tmp3);
+    MTXMultVecSR(mtx.m, sVec1, tmp2);
+    MTXMultVecSR(mtx.m, sVec2, tmp3);
 
     if (tmp2.x > tmp3.x) {
         f32 copy = tmp2.x;

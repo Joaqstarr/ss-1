@@ -504,7 +504,7 @@ bool mShadowChild_c::addMdl(scnLeaf_c &mdl, const mQuat_c &quat) {
 
 bool mShadowChild_c::setGeom(const GXTexObj *texObj, const mMtx_c &mtx, const mQuat_c &quat) {
     mQuat = quat;
-    PSMTXMultVec(mtx.m, mQuat.v, mQuat.v);
+    MTXMultVec(mtx.m, mQuat.v, mQuat.v);
     if (texObj == nullptr) {
         mTexObj = *mShadow_c::sTexObj;
     } else {
@@ -591,7 +591,7 @@ void mShadowChild_c::draw() {
     GXSetTevColor(GX_TEVREG0, mShadowColor);
     Mtx mtx;
     C_MTXLightOrtho(mtx, field_0x13C, -field_0x13C, -field_0x13C, field_0x13C, 0.5f, -0.5f, 0.5f, 0.5f);
-    PSMTXConcat(mtx, mFrustum.mView.m, mtx);
+    MTXConcat(mtx, mFrustum.mView.m, mtx);
     GXLoadTexMtxImm(mtx, GX_TEXMTX0, GX_MTX3x4);
     mShadow_c::GetInstance()->draw(mFrustum.mView, field_0x154);
     GXSetTevSwapModeTable(GX_TEV_SWAP0, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_ALPHA);
@@ -628,14 +628,14 @@ void mCustomShadow_c::calc(mMtx_c mtx, mMtx_c &mtx2) const {
     mVec3_c trans;
     mtx2.copyFrom(mMtx);
     mVec3_c offset(0.0f, field_0x48, 0.0f);
-    PSMTXMultVec(mtx2, offset, trans);
-    PSMTXMultVec(mtx, trans, trans);
+    MTXMultVec(mtx2, offset, trans);
+    MTXMultVec(mtx, trans, trans);
 
-    PSMTXTrans(mtx2, trans.x, trans.y, trans.z);
+    MTXTrans(mtx2, trans.x, trans.y, trans.z);
 
     mMtx_c scaleMtx;
-    PSMTXScale(scaleMtx, field_0x4C, field_0x4C, field_0x4C);
-    PSMTXConcat(mtx2, scaleMtx, mtx2);
+    MTXScale(scaleMtx, field_0x4C, field_0x4C, field_0x4C);
+    MTXConcat(mtx2, scaleMtx, mtx2);
 }
 
 } // namespace m3d

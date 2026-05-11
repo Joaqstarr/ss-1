@@ -9,7 +9,7 @@
 /** 2D UI - element outline when selecting with cursor */
 class dLytCursorStick_c {
 public:
-    dLytCursorStick_c() : mStateMgr(*this, sStateID::null) {
+    dLytCursorStick_c() : mStateMgr(*this) {
         sInstance = this;
     }
     ~dLytCursorStick_c() {
@@ -23,14 +23,25 @@ public:
     static bool drawDirectly();
 
     void setPriority(u8 priority);
+    void setPriority2(u8 priority) {
+        mLyt.setPriority(priority);
+    }
     void setTargetPane(const nw4r::lyt::Pane *pane);
 
     void setShouldBeOn(bool value) {
         mShouldBeOn = value;
     }
 
+    bool getShouldBeOn() const {
+        return mShouldBeOn;
+    }
+
     static dLytCursorStick_c *GetInstance() {
         return sInstance;
+    }
+
+    const nw4r::lyt::Pane *getAllPane() const {
+        return mpPanes[0];
     }
 
 private:

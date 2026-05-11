@@ -813,7 +813,7 @@ bool dAcTbox_c::isBelowGroundAtPos(f32 height, const mVec3_c &pos) {
 }
 
 dAcTbox_c::dAcTbox_c()
-    : mStateMgr(*this, sStateID::null),
+    : mStateMgr(*this),
       mScnCallback(this),
       mEvent(*this, nullptr),
       mTboxListNode(this),
@@ -2418,7 +2418,7 @@ void dAcTbox_c::fn_8026DAC0(mAng &ang) {
 }
 
 void dAcTbox_c::fn_8026DAD0(const mVec3_c *a, mVec3_c *b) const {
-    PSMTXMultVec(mWorldMtx, *a, *b);
+    MTXMultVec(mWorldMtx, *a, *b);
 }
 
 void dAcTbox_c::getCylParams(mVec3_c *c, f32 *r, f32 *h) const {
@@ -2529,7 +2529,7 @@ void dAcTbox_c::getCylParams(mVec3_c *c, f32 *r, f32 *h) const {
             break;
     }
     if (c != nullptr) {
-        PSMTXMultVec(mWorldMtx, *c, *c);
+        MTXMultVec(mWorldMtx, *c, *c);
     }
 }
 
@@ -2631,7 +2631,7 @@ bool dAcTbox_c::checkForLinkBonk() {
     }
 
     mVec3_c linkPos;
-    PSMTXMultVec(mCcD3.mInvMtx, link->mPosition, linkPos);
+    MTXMultVec(mCcD3.mInvMtx, link->mPosition, linkPos);
     mVec3_c ccLo, ccHi;
     getCCBounds(&ccLo, &ccHi);
     // Math performed in local coordinate space

@@ -74,7 +74,7 @@ public:
     void fn_80050DC0(dAcObjBase_c *, f32, f32, mAng);
     void fn_80050E00(dAcObjBase_c *, f32, f32, mAng);
     void fn_80050E40(dAcObjBase_c *, f32, f32, mAng);
-    void fn_80050EA0(dAcObjBase_c *);
+    void forceRemove(dAcObjBase_c *);
     void fn_800511E0(dAcObjBase_c *);
     void bushTpFunc(dBgS_Acch &);
     void fn_80051190(dAcObjBase_c *);

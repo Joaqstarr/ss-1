@@ -385,7 +385,7 @@ mVec3_c dAcOTumbleWeed_c::getTumblePosition() const {
     mMtx_c mtx;
     mVec3_c vec;
     mtx.ZXYrotS(mRotation.x, mRotation.y, mRotation.z);
-    PSMTXMultVecSR(mtx, mVec3_c::Ey, vec);
+    MTXMultVecSR(mtx, mVec3_c::Ey, vec);
     return mPosition + vec * 40.f;
 }
 

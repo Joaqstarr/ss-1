@@ -146,7 +146,7 @@ void dBgWKCol::vt_0x3C() {
 bool dBgWKCol::LineCheck(cBgS_LinChk *pLine) {
     mVec3_c diff;
     VEC3Sub(diff, pLine->mLin.GetStartP(), pLine->mLin.GetEndP());
-    f32 mag = PSVECMag(diff);
+    f32 mag = VECMag(diff);
     if (mag < 500.0f) {
         int tmp0 = (int)(mag * 0.002f) + 1;
         f32 tmp1 = mag / (tmp0 + 1);

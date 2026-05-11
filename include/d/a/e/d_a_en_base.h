@@ -4,6 +4,8 @@
 #include "common.h"
 #include "d/a/obj/d_a_obj_base.h"
 #include "d/a/obj/d_a_obj_bomb.h"
+#include "d/d_cc.h"
+#include "m/m3d/m_mdl.h"
 #include "m/m_angle.h"
 #include "m/m_vec.h"
 
@@ -16,8 +18,21 @@ struct dAcEnData {
 // non-official name
 class dAcEnBase_c : public dAcObjBase_c {
 public:
+    enum InteractionFlags_e {
+        INTERACT_0x1 = (1 << 0),
+        INTERACT_0x4 = (1 << 2),
+        INTERACT_0x40 = (1 << 6),
+        INTERACT_0x1000 = (1 << 12),
+        INTERACT_0x2000 = (1 << 13),
+    };
+
+public:
     dAcEnBase_c();
     virtual ~dAcEnBase_c();
+
+    virtual int preExecute() override;
+    virtual void postExecute(MAIN_STATE_e state) override;
+    virtual int preDraw() override;
 
     virtual void *getObjectListEntry() override {
         return &mEnemyLink;
@@ -36,7 +51,9 @@ public:
     /* 0x33C */ u32 mInteractionFlags;
     /* 0x340 */ u16 field_0x338;
     /* 0x342 */ u16 mHealth;
-    /* 0x344 */ u8 _344[0x374 - 0x344];
+    /* 0x344 */ u8 _344[0x358 - 0x344];
+    /* 0x358 */ mVec3_c mFinalBlowPosition;
+    /* 0x364 */ u8 _364[0x374 - 0x364];
     /* 0x374 */ dAcEnData *mpEnemyData;
 
     bool checkInteractionFlags(u32 mask) {
@@ -53,14 +70,19 @@ public:
 
     // Deals with dealing damage to Enemy
     // Returns a value 0-13 (similar to mStts rank?)
-    int fn_8002fde0(cCcD_Obj &mCc, u16 *pTgOut);
-
+    int fn_8002FDE0(cCcD_Obj &mCc, u16 *pTgOut);
+    void checkSlope(const mVec3_c &pos, s16 &, s16 &, f32);
     // Returns 0-3 based on collision
-    // 2
     int fn_800301b0(const mVec3_c &pos, mAng ang, bool, f32);
+    void fn_80030400(m3d::mdl_c &, u8, bool, u8);
     void fn_800306d0();
     void fn_80030700();
+
+    static void fn_80030980(m3d::mdl_c &, s32, bool markDirty);
+
     void fn_80030c20(u32 flags, f32, f32, f32, f32);
+
+    s32 someEnemyDamageCollisionStuffMaybe(dColliderLinkedList &list, u16 *pOutFlags);
 
     bool ChkCrossPlayer(f32 height);
 

@@ -250,7 +250,7 @@ bool AttentionManager::playTargetAnim(s32 idx) {
         dAcObjBase_c *actor = pool->getActor(mModels.mCurrentTargetInfoIdx);
         mMtx_c mtx;
         mVec3_c v = pool->mInfos[mModels.mCurrentTargetInfoIdx].field_0x08;
-        PSMTXTrans(mtx, v.x, v.y, v.z);
+        MTXTrans(mtx, v.x, v.y, v.z);
 
         mModels.mMdls->mMdl.setLocalMtx(mtx);
         mModels.mMdls->mMdl.setScale(sHio.field_0x14, sHio.field_0x14, sHio.field_0x14);
@@ -416,11 +416,9 @@ void AttentionGroup::fn_800964B0() {
     }
 }
 
-extern "C" f32 lbl_8057CD9C;
-
 f32 AttentionManager::targetScore(dAcObjBase_c *target, dAcObjBase_c *origin) {
     s16 angle = cLib::targetAngleY(target->mPosition, origin->mPosition) - origin->mRotation.y.mVal;
-    f32 viewAngle = fabsf(angle * lbl_8057CD9C);
+    f32 viewAngle = fabsf(mAng::s2n_c(angle));
     if (viewAngle > 0.5f) {
         return viewAngle;
     }
@@ -429,9 +427,7 @@ f32 AttentionManager::targetScore(dAcObjBase_c *target, dAcObjBase_c *origin) {
 
 // Maybe checks if actor is currently targeted
 bool AttentionManager::fn_80096B40(dAcObjBase_c *actor) {
-    AttentionPool *refs = mGroups[1].getOtherPool();
-    dAcObjBase_c *ac = refs->getActor(mModels.mCurrentTargetInfoIdx);
-    if (ac == actor) {
+    if (getTargetedActorUnchecked() == actor) {
         mHasTarget = 1;
     }
     return true;

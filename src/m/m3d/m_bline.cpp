@@ -59,8 +59,8 @@ void blineMat_c::update() {
     mVec3_c vec;
 
     getCurrentCamera().GetCameraMtx(&camMtx);
-    PSMTXInverse(camMtx, camMtx);
-    PSMTXMultVec(camMtx, mVec3_c::Zero, vec);
+    MTXInverse(camMtx, camMtx);
+    MTXMultVec(camMtx, mVec3_c::Zero, vec);
 
     for (bline_c *line = (bline_c *)nw4r::ut::List_GetNext(&mLines, 0); line != nullptr;
          line = (bline_c *)nw4r::ut::List_GetNext(&mLines, line)) {

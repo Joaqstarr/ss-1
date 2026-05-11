@@ -64,21 +64,21 @@ public:
     void SetScale(f32 x, f32 y, f32 z);
     void GetMtx(nw4r::math::MTX34 *out) {
         if (out != NULL) {
-            PSMTXCopy(*mpM, *out);
+            MTXCopy(*mpM, *out);
         }
     }
 
     void SetMtx(const nw4r::math::MTX34 *arg) {
         if (arg != NULL) {
-            PSMTXCopy(*arg, *mpM);
+            MTXCopy(*arg, *mpM);
         } else {
-            PSMTXIdentity(*mpM);
+            MTXIdentity(*mpM);
         }
     }
 
     // Not sure
     void SetMtxUnchecked(const nw4r::math::MTX34 *arg) {
-        PSMTXCopy(*arg, *mpM);
+        MTXCopy(*arg, *mpM);
     }
 
 private:

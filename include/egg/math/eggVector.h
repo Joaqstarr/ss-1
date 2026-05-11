@@ -1,11 +1,15 @@
 #ifndef EGG_VECTOR_H
 #define EGG_VECTOR_H
 
+#include "JSystem/JMath/JMath.h"
 #include "common.h"
 #include "egg/math/eggMath.h"
+#include "nw4r/math/math_arithmetic.h"
 #include "nw4r/math/math_triangular.h"
 
 #include "nw4r/math.h"
+
+#include <cmath>
 
 namespace EGG {
 
@@ -134,7 +138,7 @@ struct Vector3f : public nw4r::math::VEC3 {
 
     void setZero() {
         x = y = z = 0.0f;
-    };
+    }
 
     f32 normalise();
 
@@ -166,6 +170,10 @@ public:
     void set(f32 fx, f32 fy) {
         x = fx;
         y = fy;
+    }
+
+    void setZero() {
+        x = y = 0.0f;
     }
 
     Vector2f operator-(const Vector2f &v) {

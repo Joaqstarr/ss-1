@@ -5,7 +5,7 @@
 #include "egg/egg_types.h"
 #include "egg/math/eggVector.h"
 
-class JPAEmitterWorkData;
+struct JPAEmitterWorkData;
 class JPABaseParticle;
 class JPAFieldBlock;
 
@@ -122,36 +122,36 @@ public:
     JPAFieldBlock(u8 const*, EGG::Heap*);
     void init(EGG::Heap*);
 
-    u32 getType() { return mpData->mFlags & 0xF; }
-    u32 getAddType() { return (mpData->mFlags >> 8) & 3; }
-    u32 getSttFlag() { return mpData->mFlags >> 16; }
-    bool checkStatus(u16 flag) { return flag & getSttFlag(); }
+    u32 getType() const { return mpData->mFlags & 0xF; }
+    u32 getAddType() const { return (mpData->mFlags >> 8) & 3; }
+    u32 getSttFlag() const { return mpData->mFlags >> 16; }
+    u32 checkStatus(u16 flag) { return flag & getSttFlag(); }
     f32 getMagRndm() const { return mpData->mMagRndm; }
     f32 getVal1() const { return mpData->mVal1; }
-    f32 getFadeInTime() { return mpData->mFadeInTime; }
-    f32 getFadeOutTime() { return mpData->mFadeOutTime; }
-    f32 getEnTime() { return mpData->mEnTime; }
-    f32 getDisTime() { return mpData->mDisTime; }
-    u8 getCycle() { return mpData->mCycle; }
-    f32 getFadeInRate() { return mFadeInRate; }
-    f32 getFadeOutRate() { return mFadeOutRate; }
-    EGG::Vector3f& getPos() { return mPos; }
-    EGG::Vector3f& getDir() { return mDir; }
+    f32 getFadeInTime() const { return mpData->mFadeInTime; }
+    f32 getFadeOutTime() const { return mpData->mFadeOutTime; }
+    f32 getEnTime() const { return mpData->mEnTime; }
+    f32 getDisTime() const { return mpData->mDisTime; }
+    u8 getCycle() const { return mpData->mCycle; }
+    f32 getFadeInRate() const { return mFadeInRate; }
+    f32 getFadeOutRate() const { return mFadeOutRate; }
+    const EGG::Vector3f& getPos() const { return mPos; }
+    const EGG::Vector3f& getDir() const { return mDir; }
     f32 getMag() const { return mMag; }
-    void getPosOrig(EGG::Vector3f* pos) { pos->set(mpData->mPos); }
-    void getDirOrig(EGG::Vector3f* dir) { dir->set(mpData->mDir); }
-    f32 getMagOrig() { return mpData->mMag; }
+    void getPosOrig(EGG::Vector3f* pos) const { pos->set(mpData->mPos); }
+    void getDirOrig(EGG::Vector3f* dir) const { dir->set(mpData->mDir); }
+    f32 getMagOrig() const { return mpData->mMag; }
     void initOpParam() {
         getPosOrig(&mPos);
         getDirOrig(&mDir);
         mMag = getMagOrig();
     }
-    void prepare(JPAEmitterWorkData* work) { mpField->prepare(work, this); }
-    void calc(JPAEmitterWorkData* work, JPABaseParticle* ptcl) { mpField->calc(work, this, ptcl); }
+    void prepare(JPAEmitterWorkData* work) { pFld->prepare(work, this); }
+    void calc(JPAEmitterWorkData* work, JPABaseParticle* ptcl) { pFld->calc(work, this, ptcl); }
 
 private:
     /* 0x00 */ const JPAFieldBlockData* mpData;
-    /* 0x04 */ JPAFieldBase* mpField;
+    /* 0x04 */ JPAFieldBase* pFld;
     /* 0x08 */ f32 mFadeInRate;
     /* 0x0C */ f32 mFadeOutRate;
     /* 0x10 */ EGG::Vector3f mPos;

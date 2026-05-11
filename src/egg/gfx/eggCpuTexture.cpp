@@ -188,7 +188,7 @@ void CpuTexture::fillNormalMapSphere(f32 f1, f32 f2) {
             // TODO: std::sqrtf?
             vec(2) = fz < Math<f32>::zero() ? Math<f32>::zero() : (f32)sqrt(fz);
 
-            PSVECNormalize(vec, vec);
+            VECNormalize(vec, vec);
             GXUtility::getNormalColor(c, vec);
             c.r = c.a;
             setColor(x, y, c);

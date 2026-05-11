@@ -43,9 +43,9 @@ void SetAnimationEnable(Group *pGroup, nw4r::lyt::AnimTransform *pAnimTrans, boo
 // IsContain__Q24nw4r3lytFPQ34nw4r3lyt4PaneRCQ34nw4r4math4VEC2
 bool IsContain(Pane *pPane, const math::VEC2 &pos) {
     math::MTX34 invGlbMtx;
-    PSMTXInverse(pPane->GetGlobalMtx(), invGlbMtx);
+    MTXInverse(pPane->GetGlobalMtx(), invGlbMtx);
     math::VEC3 lclPos;
-    PSMTXMultVec(invGlbMtx, math::VEC3(pos.x, pos.y, 0.0f), lclPos);
+    MTXMultVec(invGlbMtx, math::VEC3(pos.x, pos.y, 0.0f), lclPos);
     return Contains(pPane->GetPaneRect(), math::VEC2(lclPos.x, lclPos.y));
 }
 

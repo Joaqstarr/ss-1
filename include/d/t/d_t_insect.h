@@ -1,11 +1,11 @@
 #ifndef D_T_INSECT_H
 #define D_T_INSECT_H
 
+#include "common.h"
 #include "d/a/d_a_base.h"
 #include "d/t/d_tg.h"
 #include "m/m_vec.h"
 #include "s/s_State.hpp"
-#include "s/s_StateMgr.hpp"
 
 extern "C" bool fn_801BB750(nw4r::math::AABB *aabb, f32 f);
 
@@ -35,7 +35,7 @@ public:
         SPAWN_GODDESS_WALL,
         SPAWN_DEFAULT = 0xF,
     };
-    dTgInsect_c() : mStateMgr(*this, sStateID::null) {}
+    dTgInsect_c() : mStateMgr(*this) {}
     virtual ~dTgInsect_c() {}
 
     virtual int doDelete() override;
@@ -46,6 +46,13 @@ public:
 
     void setKillSignal() {
         mKillSignal = 1;
+    }
+
+    void reveal(mVec3_c* pos) {
+        mRevealed = 1;
+        if (pos != nullptr) {
+            mRevealedSpawnPos = *pos;
+        }
     }
 
     static const f32 SCALE_X;

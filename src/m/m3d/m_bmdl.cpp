@@ -44,7 +44,7 @@ bool bmdl_c::getNodeWorldMtxMultVec(u32 p1, const nw4r::math::VEC3 &in, nw4r::ma
     if (!getNodeWorldMtx(p1, &mtx)) {
         return false;
     } else {
-        PSMTXMultVec(mtx, in, out);
+        MTXMultVec(mtx, in, out);
         return true;
     }
 }

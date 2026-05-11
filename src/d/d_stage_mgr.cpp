@@ -33,7 +33,7 @@ STATE_DEFINE(dStageMgr_c, SceneChangeSave);
 STATE_DEFINE(dStageMgr_c, RestartSceneWait);
 STATE_DEFINE(dStageMgr_c, RestartScene);
 
-dStageMgr_c::dStageMgr_c() : mStateMgr(*this, sStateID::null), mPhase(this, sCallbacks) {
+dStageMgr_c::dStageMgr_c() : mStateMgr(*this), mPhase(this, sCallbacks) {
     sInstance = this;
 }
 
@@ -134,7 +134,7 @@ void dStageMgr_c::initializeState_ReadLayerObjectRes() {
         parseBzsStageRoom(roomId, bzs);
     }
 
-    if (dScGame_c::isStateLayerWithSeekerStoneHintMenu()) {
+    if (dScGame_c::isSeekerStoneStageAndLayer()) {
         mLayoutArcCtrl2.set(sSeekerStoneLayoutArcs, ARRAY_LENGTH(sSeekerStoneLayoutArcs));
         mLayoutArcCtrl2.load(dHeap::work2Heap.heap);
         addActorId(fProfile::LYT_SEEKER_STONE);

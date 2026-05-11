@@ -9,9 +9,9 @@ const f32 dTgNoEffectArea_c::sFloat2 = 100.0f;
 
 int dTgNoEffectArea_c::create() {
     mScale *= 0.01f;
-    PSMTXTrans(mMtx, mPosition.x, mPosition.y, mPosition.z);
+    MTXTrans(mMtx, mPosition.x, mPosition.y, mPosition.z);
     mMtx.YrotM(mRotation.y);
-    PSMTXInverse(mMtx, mMtx);
+    MTXInverse(mMtx, mMtx);
     addToList(sList);
     return SUCCEEDED;
 }

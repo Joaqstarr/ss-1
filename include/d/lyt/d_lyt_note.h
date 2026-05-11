@@ -7,7 +7,7 @@
 // size 0x27C
 class dLytNote_c {
 public:
-    dLytNote_c() : mStateMgr(*this, sStateID::null) {}
+    dLytNote_c() : mStateMgr(*this) {}
     virtual ~dLytNote_c() {}
 
     bool build(d2d::ResAccIf_c *);
@@ -19,6 +19,46 @@ public:
 
     f32 getField0x260() const;
     void setFrame(f32);
+
+    bool isStateWait() const {
+        return mStateMgr.isState(StateID_Wait);
+    }
+
+    void forceOut() {
+        mShouldMove = false;
+        mForceOut = true;
+    }
+
+    void lose() {
+        mShouldMove = false;
+        mIsCollected = false;
+    }
+
+    void collect() {
+        mShouldMove = false;
+        mIsCollected = true;
+    }
+
+    void startLose() {
+        mIsAboutToLose = true;
+    }
+
+    void stopLose() {
+        mIsAboutToLose = false;
+    }
+
+    void setColor(s32 color) {
+        mColor = color;
+    }
+
+    void setMove() {
+        mIsAboutToLose = false;
+        mShouldMove = true;
+    }
+
+    bool isMove() const {
+        return mIsMove;
+    }
 
 private:
     STATE_FUNC_DECLARE(dLytNote_c, Wait);
@@ -34,12 +74,12 @@ private:
     /* 0x260 */ f32 field_0x260;
     /* 0x264 */ s32 mOutAnim;
     /* 0x268 */ s32 mInAnim;
-    /* 0x26C */ s32 field_0x26C;
-    /* 0x270 */ u8 field_0x270;
-    /* 0x271 */ u8 field_0x271;
-    /* 0x272 */ u8 field_0x272;
-    /* 0x273 */ u8 field_0x273;
-    /* 0x274 */ u8 field_0x274;
+    /* 0x26C */ s32 mColor;
+    /* 0x270 */ bool mShouldMove;
+    /* 0x271 */ bool mIsCollected;
+    /* 0x272 */ bool mIsAboutToLose;
+    /* 0x273 */ bool mIsMove;
+    /* 0x274 */ bool mForceOut;
 };
 
 #endif

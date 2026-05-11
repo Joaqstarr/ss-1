@@ -3,6 +3,7 @@
 #define NEED_DIRECT_FRAMECTRL_ACCESS
 
 #include "c/c_math.h"
+#include "d/d_vec.h"
 #include "d/d_player_act.h"
 #include "d/snd/d_snd_player_mgr.h"
 #include "toBeSorted/minigame_mgr.h"
@@ -123,10 +124,6 @@ dLytMap_HIO_c::dLytMap_HIO_c() {
 }
 
 dLytMap_HIO_c::~dLytMap_HIO_c() {}
-
-inline mVec3_c vec2ToVec3XY(const mVec2_c &v) {
-    return mVec3_c(v.x, v.y, 0.0f);
-}
 
 void dMapFootPrintsQueue_c::init() {
     int j = ARRAY_LENGTH(mEntries) - 1;
@@ -2227,7 +2224,7 @@ static const char *sPriorityGroupNames[] = {
 };
 
 void dLytMapMain_c::build() {
-    mIsVisible = 0;
+    mIsVisible = false;
     field_0x8DB0 = 0;
     if (dScGame_c::isCurrentStage("F102")) {
         // awesome but unnecessary
@@ -2362,7 +2359,7 @@ void dLytMapMain_c::build() {
     mAnmGroups[MAP_MAIN_ANIM_IN].unbind();
 
     mAnmGroups[MAP_MAIN_ANIM_OUT].bind(false);
-    field_0x8C8C = mAnmGroups[MAP_MAIN_ANIM_OUT].getLastFrame();
+    mOutDuration = mAnmGroups[MAP_MAIN_ANIM_OUT].getLastFrame();
     mAnmGroups[MAP_MAIN_ANIM_OUT].unbind();
     field_0x8CAC = 0;
     mDisplayedBeaconCount = getMaxBeaconCount();
@@ -3185,18 +3182,17 @@ void dLytMapMain_c::setupEvent(s32 event, s32 arg1, s32 arg2) {
     }
 
     mMarkers.setLinkRot(link->getRotation());
-    // TODO - mAng nonsense?
-    field_0x8D68 = dScGame_c::getCamera(0)->fn_8019E3B0();
+    field_0x8D68 = dScGame_c::getCamera(0)->getXZAngle();
     mpAllPane->SetVisible(false);
     getGlobal()->setField_0x55(field_0x8CAE);
-    mDoCameraTransition = false;
+    mCameraTransitionPossible = false;
     switch (event) {
         case MAP_EVENT_NONE: {
             if (mRoomType != ROOMTYPE_BOSS_HOUSE && mRoomType != ROOMTYPE_SKYFIELD_INTERIOR && field_0x8CAE) {
                 mCurrentMapMode = dLytMapGlobal_c::MAPMODE_ZOOM;
                 mNextMapMode = mCurrentMapMode;
                 mMapUpDirection = false;
-                mDoCameraTransition = true;
+                mCameraTransitionPossible = true;
             } else {
                 if (!sSavedMapData.entries[mRoomType].isValid) {
                     if (MinigameManager::isInMinigameState(MinigameManager::SPIRAL_CHARGE_TUTORIAL)) {
@@ -3204,7 +3200,7 @@ void dLytMapMain_c::setupEvent(s32 event, s32 arg1, s32 arg2) {
                         fn_80142C80(mCurrentMapMode);
                         // TODO - regswap (???)
                         mMapUpDirection = false;
-                        mDoCameraTransition = true;
+                        mCameraTransitionPossible = true;
                     } else {
                         loadMapState();
                         if (mRoomType == ROOMTYPE_SKYFIELD) {
@@ -3215,21 +3211,21 @@ void dLytMapMain_c::setupEvent(s32 event, s32 arg1, s32 arg2) {
                             mMapUpDirection = true;
                         }
                         if (mMapUpDirection == false) {
-                            mDoCameraTransition = true;
+                            mCameraTransitionPossible = true;
                         }
                     }
                 } else {
                     loadMapState();
                     if (mMapUpDirection == false) {
-                        mDoCameraTransition = true;
+                        mCameraTransitionPossible = true;
                     }
                 }
                 if (link->checkActionFlags(daPlayerActBase_c::FLG0_CRAWLING)) {
-                    mDoCameraTransition = false;
+                    mCameraTransitionPossible = false;
                 }
             }
             if (mRoomType == ROOMTYPE_DUNGEON) {
-                mDoCameraTransition = false;
+                mCameraTransitionPossible = false;
             }
             break;
         }
@@ -3258,7 +3254,7 @@ void dLytMapMain_c::setupEvent(s32 event, s32 arg1, s32 arg2) {
                 case 1: mCurrentMapMode = dLytMapGlobal_c::MAPMODE_ZOOM; break;
             }
             mMapUpDirection = true;
-            mDoCameraTransition = false;
+            mCameraTransitionPossible = false;
             break;
         }
         case MAP_EVENT_MAP_INTRO: {
@@ -3268,7 +3264,7 @@ void dLytMapMain_c::setupEvent(s32 event, s32 arg1, s32 arg2) {
                 mCurrentMapMode = dLytMapGlobal_c::MAPMODE_WORLD;
             }
             mMapUpDirection = true;
-            mDoCameraTransition = false;
+            mCameraTransitionPossible = false;
             break;
         }
         case MAP_EVENT_DUNGEON_MAP_GET:
@@ -3281,20 +3277,20 @@ void dLytMapMain_c::setupEvent(s32 event, s32 arg1, s32 arg2) {
         case MAP_EVENT_SW_BANK_SMALL: {
             mCurrentMapMode = dLytMapGlobal_c::MAPMODE_STAGE;
             mMapUpDirection = true;
-            mDoCameraTransition = false;
+            mCameraTransitionPossible = false;
             break;
         }
         case MAP_EVENT_FIELD_MAP_CHANGE_5:
         case MAP_EVENT_FIELD_MAP_CHANGE_8: {
             mCurrentMapMode = dLytMapGlobal_c::MAPMODE_STAGE;
             mMapUpDirection = true;
-            mDoCameraTransition = false;
+            mCameraTransitionPossible = false;
             break;
         }
         case MAP_EVENT_SAVE_OBJ: {
             mCurrentMapMode = dLytMapGlobal_c::MAPMODE_PROVINCE;
             mMapUpDirection = true;
-            mDoCameraTransition = false;
+            mCameraTransitionPossible = false;
             break;
         }
     }
@@ -3303,16 +3299,16 @@ void dLytMapMain_c::setupEvent(s32 event, s32 arg1, s32 arg2) {
     mNextMapMode = mCurrentMapMode;
     if (mCurrentMapMode == dLytMapGlobal_c::MAPMODE_WORLD || mCurrentMapMode == dLytMapGlobal_c::MAPMODE_PROVINCE ||
         mCurrentMapMode == dLytMapGlobal_c::MAPMODE_WORLD_SKY) {
-        mDoCameraTransition = false;
+        mCameraTransitionPossible = false;
     }
 
-    if (mDoCameraTransition) {
-        dScGame_c::getCamera(0)->doFn_80093380();
+    if (mCameraTransitionPossible) {
+        dScGame_c::getCamera(0)->getMapCam()->setCameraTransition();
     } else {
-        dScGame_c::getCamera(0)->doFn_80093360();
-        dScGame_c::getCamera(0)->doFn_80093340();
+        dScGame_c::getCamera(0)->getMapCam()->setNoCameraTransition();
+        dScGame_c::getCamera(0)->getMapCam()->fn_80093340();
     }
-    dScGame_c::getCamera(0)->fn_8019E410();
+    dScGame_c::getCamera(0)->enterMap();
     dLytMapMain_vt0x10();
     s32 floor = dStage_c::GetInstance()->getMapRelated()->getField_0x1EC();
     mCurrentFloor = floor;
@@ -3352,27 +3348,27 @@ void dLytMapMain_c::setupEvent(s32 event, s32 arg1, s32 arg2) {
 
 void dLytMapMain_c::close() {
     dBase_c::s_DrawControlFlags &= ~dBase_c::BASE_PROP_0x10;
-    mDoCameraTransition = false;
+    mCameraTransitionPossible = false;
     if (mMapEvent == MAP_EVENT_NONE) {
         if (mRoomType == ROOMTYPE_FIELD || mRoomType == ROOMTYPE_SKYLOFT) {
             if (!field_0x8CAE && !mMapUpDirection) {
-                mDoCameraTransition = true;
+                mCameraTransitionPossible = true;
             }
         } else if (mRoomType == ROOMTYPE_DUNGEON && !field_0x8CAE && !mMapUpDirection) {
-            mDoCameraTransition = false;
-            dScGame_c::getCamera(0)->doFn_80093340();
+            mCameraTransitionPossible = false;
+            dScGame_c::getCamera(0)->getMapCam()->fn_80093340();
         }
     }
 
     if (mCurrentMapMode == dLytMapGlobal_c::MAPMODE_WORLD || mCurrentMapMode == dLytMapGlobal_c::MAPMODE_PROVINCE ||
         mCurrentMapMode == dLytMapGlobal_c::MAPMODE_WORLD_SKY) {
-        mDoCameraTransition = false;
+        mCameraTransitionPossible = false;
     }
 
-    if (mDoCameraTransition) {
-        dScGame_c::getCamera(0)->doFn_80093380();
+    if (mCameraTransitionPossible) {
+        dScGame_c::getCamera(0)->getMapCam()->setCameraTransition();
     } else {
-        dScGame_c::getCamera(0)->doFn_80093360();
+        dScGame_c::getCamera(0)->getMapCam()->setNoCameraTransition();
     }
 
     if (mMapEvent == MAP_EVENT_NONE) {
@@ -3380,7 +3376,7 @@ void dLytMapMain_c::close() {
     }
 
     mEventDone = false;
-    dScGame_c::getCamera(0)->fn_8019E430();
+    dScGame_c::getCamera(0)->leaveMap();
 
     dSndPlayerMgr_c::GetInstance()->leaveMap();
     mStateMgr.changeState(StateID_Out);
@@ -4091,6 +4087,10 @@ void dLytMapMain_c::setupFlags() {
     }
 }
 
+void dLytMapMain_c::fn_8013B350() {
+    field_0x8C84 = 1;
+}
+
 void dLytMapMain_c::initializeState_In() {
     if (mMapEvent == MAP_EVENT_SAVE_OBJ) {
         displaySaveObjs();
@@ -4099,7 +4099,7 @@ void dLytMapMain_c::initializeState_In() {
         }
     }
 
-    if (mDoCameraTransition || mMapEvent == MAP_EVENT_MAP_INTRO) {
+    if (mCameraTransitionPossible || mMapEvent == MAP_EVENT_MAP_INTRO) {
         mpInOutAnmGroup = &mAnmGroups[MAP_MAIN_ANIM_IN];
     } else {
         mpInOutAnmGroup = &mAnmGroups[MAP_MAIN_ANIM_IN_NO_CAM];
@@ -4111,10 +4111,11 @@ void dLytMapMain_c::initializeState_In() {
     mPinIconAggregate.setScale(getGlobal()->getZoomFrame());
 }
 void dLytMapMain_c::executeState_In() {
-    mIsVisible = 1;
+    mIsVisible = true;
 
     dLytMapGlobal_c *global = getGlobal();
-    if ((!mDoCameraTransition || !field_0x8C84) && mDoCameraTransition) {
+    // ???
+    if ((!mCameraTransitionPossible || !field_0x8C84) && mCameraTransitionPossible) {
         return;
     }
 
@@ -4599,7 +4600,7 @@ void dLytMapMain_c::initializeState_Out() {
         mPopupInfo.mStateMgr.changeState(StateID_Out);
     }
     dLytMeter_c::GetInstance()->setMeterMode(dLytMeterMain_c::MODE_MAP_INIT);
-    if (mDoCameraTransition || mMapEvent == MAP_EVENT_MAP_INTRO) {
+    if (mCameraTransitionPossible || mMapEvent == MAP_EVENT_MAP_INTRO) {
         mpInOutAnmGroup = &mAnmGroups[MAP_MAIN_ANIM_OUT];
     } else {
         mpInOutAnmGroup = &mAnmGroups[MAP_MAIN_ANIM_OUT_NO_CAM];
@@ -4607,7 +4608,7 @@ void dLytMapMain_c::initializeState_Out() {
 
     mpInOutAnmGroup->bind(false);
     mpInOutAnmGroup->setFrame(0.0f);
-    field_0x8C8C = mpInOutAnmGroup->getLastFrame();
+    mOutDuration = mpInOutAnmGroup->getLastFrame();
 
     if (fn_80141530()) {
         dBase_c::s_NextExecuteControlFlags &= ~dBase_c::BASE_PROP_0x10;
@@ -4623,7 +4624,7 @@ void dLytMapMain_c::executeState_Out() {
             dBase_c::s_NextExecuteControlFlags &= ~dBase_c::BASE_PROP_0x10;
             mLyt.calc();
             mpInOutAnmGroup->unbind();
-            mIsVisible = 0;
+            mIsVisible = false;
             mStateMgr.changeState(StateID_Invisible);
         }
     }
@@ -5050,8 +5051,8 @@ void dLytMapMain_c::forceOut() {
     mAnmGroups[MAP_MAIN_ANIM_OUT].unbind();
     dBase_c::s_NextExecuteControlFlags &= ~dBase_c::BASE_PROP_0x10;
     dBase_c::s_DrawControlFlags &= ~dBase_c::BASE_PROP_0x10;
-    dScGame_c::getCamera(0)->doFn_80093360();
-    dScGame_c::getCamera(0)->fn_8019E430();
+    dScGame_c::getCamera(0)->getMapCam()->setNoCameraTransition();
+    dScGame_c::getCamera(0)->leaveMap();
     mStateMgr.changeState(StateID_Invisible);
 }
 

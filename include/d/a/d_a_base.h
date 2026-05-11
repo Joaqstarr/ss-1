@@ -70,6 +70,7 @@ class dAcBase_c : public dBase_c {
 public:
     enum AcProperties_e {
         AC_PROP_0x1 = (1 << 0),
+        AC_PROP_0x2 = (1 << 1),
         AC_PROP_0x4 = (1 << 2),
         AC_PROP_0x100 = (1 << 8),
         AC_PROP_0x400 = (1 << 10),
@@ -78,6 +79,7 @@ public:
         AC_PROP_0x4000000 = (1 << 26),
         AC_PROP_0x8000000 = (1 << 27),
         AC_PROP_0x10000000 = (1 << 28),
+        AC_PROP_0x20000000 = (1 << 29),
         AC_PROP_0x40000000 = (1 << 30),
     };
 
@@ -157,12 +159,20 @@ public:
     mVec3_c &getPosition() {
         return mPosition;
     }
+    mVec3_c const &getPosition() const {
+        return mPosition;
+    }
     mAng3_c &getRotation() {
         return mRotation;
     }
 
     mVec3_c getPostionDifference(const dAcBase_c &other) const {
         return mPosition - other.mPosition;
+    }
+
+    void getPostionDifferenceOut(const mVec3_c &other, mVec3_c &result) const {
+        mVec3_c diff = (other - mPosition);
+        result = diff;
     }
 
     f32 getHeightDifference(const dAcBase_c &b) const {
@@ -189,6 +199,14 @@ public:
         return mRoomID;
     }
 
+    bool isRoomID(s8 room) const {
+        return mRoomID == room;
+    }
+
+    void setRoomId(u32 room) {
+        mRoomID = room;
+    }
+
     void unsetActorProperty(u32 property) {
         mActorProperties &= ~property;
     }
@@ -199,8 +217,8 @@ public:
         return mActorProperties & property;
     }
 
-    dAcBase_c* searchNextActor(dAcBase_c* parent) {
-        return static_cast<dAcBase_c*>(fManager_c::searchBaseByGroupType(dAcBase_c::ACTOR, parent));
+    dAcBase_c *searchNextActor(dAcBase_c *parent) {
+        return static_cast<dAcBase_c *>(fManager_c::searchBaseByGroupType(dAcBase_c::ACTOR, parent));
     }
 
 public:

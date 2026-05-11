@@ -79,7 +79,7 @@ class dRoom_c : public dBase_c {
 
 public:
     dRoom_c()
-        : mStateMgr(*this, sStateID::null),
+        : mStateMgr(*this),
           mpFile(nullptr),
           mpScen(nullptr),
           mpPly(nullptr),
@@ -130,6 +130,10 @@ public:
     void setFile(const bzsFILE *file, u16 count) {
         mFileCount = count;
         mpFile = file;
+    }
+
+    const bzsFILE *getFile() const {
+        return mpFile;
     }
 
     void setScen(const SCEN *scen, u16 count) {

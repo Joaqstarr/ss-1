@@ -54,7 +54,7 @@ void mColorFader_c::draw() {
     GXSetProjection(projMtx, GX_ORTHOGRAPHIC);
 
     Mtx posMtx;
-    PSMTXIdentity(posMtx);
+    MTXIdentity(posMtx);
     GXLoadPosMtxImm(posMtx, 0);
     GXSetCurrentMtx(0);
 

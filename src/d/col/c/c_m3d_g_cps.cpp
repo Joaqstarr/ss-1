@@ -16,7 +16,7 @@ void cM3dGCps::SetR(f32 r) {
         r = 0.0f;
     }
     mRadius = r;
-    field_0x1C = (double)r; // huh
+    field_0x1C = mRadius;
 }
 
 void cM3dGCps::Set_0x1C(f32 f) {
@@ -34,10 +34,10 @@ bool cM3dGCps::Cross(cM3dGUnk &unk, mVec3_c *vec) {
 
 bool cM3dGCps::fn_80337f40(const mVec3_c &v) const {
     f32 r2 = mRadius * mRadius;
-    if (!(mFlags & 1) && PSVECSquareDistance(mStart, v) <= r2) {
+    if (!(mFlags & 1) && VECSquareDistance(mStart, v) <= r2) {
         return true;
     }
-    if (!(mFlags & 2) && PSVECSquareDistance(mEnd, v) <= r2) {
+    if (!(mFlags & 2) && VECSquareDistance(mEnd, v) <= r2) {
         return true;
     }
     f32 tmp;

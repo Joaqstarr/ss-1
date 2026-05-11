@@ -25,7 +25,7 @@ int dTgColBombShield::create() {
     mColMtx.transS(mPosition.x, mPosition.y + mScale.y * 0.5f - 0.05f, mPosition.z);
     mColMtx.ZXYrotM(mRotation.x, mRotation.y, mRotation.z);
     mMtx_c tmp;
-    PSMTXScale(tmp, mScale.x, mScale.y, mScale.z);
+    MTXScale(tmp, mScale.x, mScale.y, mScale.z);
     mColMtx += tmp;
     mStateMgr.changeState(StateID_Wait);
     return SUCCEEDED;

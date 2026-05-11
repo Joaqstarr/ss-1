@@ -26,7 +26,7 @@ public:
     void CalcPos(mVec3_c *, f32) const;
 
     void CalcVec(Vec *pOut) const {
-        PSVECSubtract(mEnd, mStart, pOut);
+        VECSubtract(mEnd, mStart, pOut);
     }
 
     void SetStart(const mVec3_c &);

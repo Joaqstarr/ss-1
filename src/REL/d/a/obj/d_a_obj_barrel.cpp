@@ -28,7 +28,6 @@
 #include "m/m_mtx.h"
 #include "m/m_quat.h"
 #include "m/m_vec.h"
-#include "math.h"
 #include "nw4r/g3d/res/g3d_resfile.h"
 #include "nw4r/math/math_arithmetic.h"
 #include "rvl/MTX/mtxvec.h"
@@ -537,7 +536,7 @@ void dAcOBarrel_c::executeState_GrabUp() {
         dAcNpcCeFriend_c *pCeFriend = mCeFriend.get();
         if (0 == sLib::calcTimer(&field_0xE15)) {
             if ((pCeLady && pCeLady->fn_12_1C20(this)) || (pCeFriend && pCeFriend->fn_11_17C0(this))) {
-                getLinkage().fn_80050EA0(this);
+                getLinkage().forceRemove(this);
                 quat_0xD80 = quat_0xD60;
                 mStateMgr.changeState(StateID_Wait);
                 return;
@@ -827,7 +826,7 @@ void dAcOBarrel_c::initializeState_Rebirth() {
 
     mCyl.ClrCoSet();
     mCyl.ClrTgSet();
-    getLinkage().fn_80050EA0(this);
+    getLinkage().forceRemove(this);
 
     mStts.SetRank(0);
     setObjectProperty(OBJ_PROP_0x200);
@@ -1070,7 +1069,7 @@ void dAcOBarrel_c::fn_293_3DB0() {
 
 extern "C" void fn_800307E0(const mVec3_c &, s32);
 void dAcOBarrel_c::fn_293_4200() {
-    getLinkage().fn_80050EA0(this);
+    getLinkage().forceRemove(this);
 
     if (field_0xE04 || field_0xE05) {
         dAcNpcCeLady_c *pCeLady = mCeLady.get();

@@ -66,7 +66,7 @@ void ModelEx::getShapeMinMax(u16 shapeIndex, math::VEC3 *pMin, math::VEC3 *pMax,
             math::MTX34 *pMtxArr =
                 reinterpret_cast<math::MTX34 *>(G3DUtility::BumpAlloc(info.GetNumPosNrmMtx() * sizeof(math::MTX34), 1));
             if (doCalcWorld) {
-                PSMTXIdentity(tmpMtx);
+                MTXIdentity(tmpMtx);
                 calcWorld(pMtxArr, &tmpMtx);
             }
 
@@ -86,7 +86,7 @@ void ModelEx::getShapeMinMax(u16 shapeIndex, math::VEC3 *pMin, math::VEC3 *pMax,
                     mtxIdx = defaultMatrixIdx;
                 }
                 nw4r::math::VEC3 tmpVec;
-                PSMTXMultVec(pMtxArr[mtxIdx], &analyze.getVtxResult().field_0x08, tmpVec);
+                MTXMultVec(pMtxArr[mtxIdx], &analyze.getVtxResult().field_0x08, tmpVec);
                 if (firstIteration) {
                     firstIteration = false;
                     *pMin = *pMax = tmpVec;

@@ -16,8 +16,8 @@ cM3dGUnk::cM3dGUnk() {
     field_0xB4 = 0;
     mVirtCenter.set(0.0f, 0.0f, 0.0f);
     field_0xC4 = 0.0f;
-    PSMTXIdentity(mMtx);
-    PSMTXIdentity(mInvMtx);
+    MTXIdentity(mMtx);
+    MTXIdentity(mInvMtx);
 }
 
 void cM3dGUnk::Set(const mVec3_c &vA, const mVec3_c &vB) {
@@ -34,13 +34,13 @@ void cM3dGUnk::Set(const mVec3_c &vA, const mVec3_c &vB) {
 
 void cM3dGUnk::Update() {
     mVec3_c a, b;
-    PSMTXMultVec(mMtx, mMin, a);
-    PSMTXMultVec(mMtx, mMax, b);
+    MTXMultVec(mMtx, mMin, a);
+    MTXMultVec(mMtx, mMax, b);
     mLin.GetStart().x = (a.x + b.x) * 0.5f;
     mLin.GetStart().y = (a.y + b.y) * 0.5f;
     mLin.GetStart().z = (a.z + b.z) * 0.5f;
-    if (!PSMTXInverse(mMtx, mInvMtx)) {
-        PSMTXIdentity(mInvMtx);
+    if (!MTXInverse(mMtx, mInvMtx)) {
+        MTXIdentity(mInvMtx);
     }
 }
 
@@ -89,7 +89,7 @@ void cM3dGUnk::Set(const mMtx_c &mtx) {
 
 void cM3dGUnk::Set(const mVec3_c &vec, const mAng &ang) {
     mMtx_c mtx;
-    PSMTXIdentity(mtx);
+    MTXIdentity(mtx);
     mtx.YrotS(ang);
     mtx.setTranslation(vec);
     Set(mtx);
@@ -97,7 +97,7 @@ void cM3dGUnk::Set(const mVec3_c &vec, const mAng &ang) {
 
 bool cM3dGUnk::Cross(const mVec3_c &vec) {
     mVec3_c tmp;
-    PSMTXMultVec(mInvMtx, vec, tmp);
+    MTXMultVec(mInvMtx, vec, tmp);
     if ((tmp.x < mMin.x)) {
         return false;
     }
@@ -121,11 +121,11 @@ bool cM3dGUnk::Cross(const mVec3_c &vec) {
 
 void cM3dGUnk::Clamp(const mVec3_c &in, mVec3_c &out) {
     mVec3_c tmp1, tmp2;
-    PSMTXMultVec(mInvMtx, in, tmp1);
+    MTXMultVec(mInvMtx, in, tmp1);
     cM3dGAab aab;
     aab.Set(mMin, mMax);
     aab.Clamp(tmp1, tmp2);
-    PSMTXMultVec(mMtx, tmp2, out);
+    MTXMultVec(mMtx, tmp2, out);
 }
 
 void cM3dGUnk::fn_80338f30(f32 f0, f32 f1) {

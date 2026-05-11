@@ -31,9 +31,9 @@ cBgW::cBgW()
       mpGrp(nullptr),
       mpNodeTree(nullptr),
       mNeedsFullTransform(true) {
-    PSMTXIdentity(mInvMtx);
-    PSMTXIdentity(mMtx);
-    PSMTXIdentity(mMtxUnk);
+    MTXIdentity(mInvMtx);
+    MTXIdentity(mMtx);
+    MTXIdentity(mMtxUnk);
 }
 
 cBgW::~cBgW() {
@@ -65,24 +65,24 @@ void cBgW::FreeArea() {
 }
 
 u32 cBgW::GetOldInvMtx(mMtx_c *m) {
-    return PSMTXInverse(mMtx, *m);
+    return MTXInverse(mMtx, *m);
 }
 
 void cBgW::UpdateMtx() {
     if (!mpMdlMtx) {
-        PSMTXIdentity(mInvMtx);
-        PSMTXIdentity(mMtx);
-        PSMTXIdentity(mMtxUnk);
+        MTXIdentity(mInvMtx);
+        MTXIdentity(mMtx);
+        MTXIdentity(mMtxUnk);
     } else {
-        PSMTXCopy(*mpMdlMtx, mInvMtx);
+        MTXCopy(*mpMdlMtx, mInvMtx);
         if (mpScale) {
             mMtx_c scale;
-            PSMTXScale(scale, mpScale->x, mpScale->y, mpScale->z);
-            PSMTXConcat(mInvMtx, scale, mInvMtx);
+            MTXScale(scale, mpScale->x, mpScale->y, mpScale->z);
+            MTXConcat(mInvMtx, scale, mInvMtx);
         }
 
-        PSMTXCopy(mInvMtx, mMtx);
-        PSMTXCopy(mInvMtx, mMtxUnk);
+        MTXCopy(mInvMtx, mMtx);
+        MTXCopy(mInvMtx, mMtxUnk);
     }
 }
 
@@ -99,7 +99,7 @@ void cBgW::GlobalVtx() {
         } else {
             int i = 0;
             do {
-                PSMTXMultVec(mInvMtx, mpBgd->mVtxTbl[i], mpVtxTbl[i]);
+                MTXMultVec(mInvMtx, mpBgd->mVtxTbl[i], mpVtxTbl[i]);
                 i++;
             } while (i < mpBgd->mVtxNum);
         }

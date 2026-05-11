@@ -9,7 +9,7 @@
 
 class dLytMeterGanbariGauge_c : public d2d::dSubPane {
 public:
-    dLytMeterGanbariGauge_c() : mStateMgrMain(*this, sStateID::null), mStateMgrWheel(*this, sStateID::null) {}
+    dLytMeterGanbariGauge_c() : mStateMgrMain(*this), mStateMgrWheel(*this) {}
     virtual bool build(d2d::ResAccIf_c *resAcc) override;
     virtual bool remove() override;
     virtual bool execute() override;
@@ -33,6 +33,10 @@ public:
 
     void setStaminaPercent(f32 value) {
         mStaminaPercent = value;
+    }
+
+    void setClefRelated(bool v) {
+        mClefRelated = v;
     }
 
     void setField_0x539(bool v) {
@@ -87,12 +91,11 @@ private:
     /* 0x548 */ s32 field_0x548;
     /* 0x54C */ f32 field_0x54C;
     /* 0x550 */ f32 field_0x550;
-
     /* 0x554 */ f32 field_0x554;
-    u8 field_0x558;
-    u8 field_0x559;
-    bool field_0x55A;
-    u8 field_0x55B;
+    /* 0x558 */ u8 field_0x558;
+    /* 0x559 */ bool mClefRelated;
+    /* 0x55A */ bool field_0x55A;
+    /* 0x55B */ u8 field_0x55B;
 };
 
 STATIC_ASSERT(sizeof(dLytMeterGanbariGauge_c) == 0x55C);

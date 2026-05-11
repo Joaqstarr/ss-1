@@ -308,7 +308,7 @@ void LightTexture::initDrawSetting(u16 u1, u16 u2, u16 u3, u16 u4) {
     GXSetTevSwapModeTable(GX_TEV_SWAP0, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_ALPHA);
 }
 
-void LightTexture::getTexDimensions(u16 *x, u16 *y, u16 *w, u16 *h, u16 count) {
+void LightTexture::getRequiredPosAndSize(u16 *x, u16 *y, u16 *w, u16 *h, u16 count) {
     *x = sDrawPosX;
     *y = sDrawPosY;
 
@@ -519,7 +519,7 @@ void LightTexture::debugDraw(int i) {
     fn_804AC0A0(i, &u1, &u2);
     load(GX_TEXMAP0);
     nw4r::math::MTX34 mtx;
-    PSMTXScale(mtx, sTexWidth, sTexHeight, 1.0f);
+    MTXScale(mtx, sTexWidth, sTexHeight, 1.0f);
 
     mtx._03 = u1;
     mtx._13 = sDrawHeight - (u2 + sTexHeight);
@@ -550,7 +550,7 @@ void LightTexture::addLight(const EGG::LightObject &obj) {
 
     nw4r::math::VEC3 vec;
     GXColor color;
-    obj.fn_804A9C30(this, &vec, &color);
+    obj.CalcFinalDirColor(*this, &vec, &color);
     int remainder = field_0x9F % field_0x9D;
     if (field_0x9F == field_0x9D) {
         GXSetBlendMode(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_CLEAR);

@@ -2,6 +2,7 @@
 
 #include "common.h"
 #include "d/a/d_a_player.h"
+#include "d/a/obj/d_a_obj_base.h"
 #include "f/f_base.h"
 #include "m/m_vec.h"
 #include "nw4r/g3d/res/g3d_resfile.h"
@@ -20,9 +21,7 @@ bool dAcODecoB_c::createHeap() {
 }
 
 int dAcODecoB_c::create() {
-    if (!initAllocatorWork1Heap(0x1000, "dAcODecoB_c::m_allocator", 0x20)) {
-        return FAILED;
-    }
+    CREATE_ALLOCATOR_SIZE(dAcODecoB_c, 0x1000);
     mAcceleration = 0.0f;
     mMaxSpeed = 0.0f;
     mStateMgr.changeState(StateID_Wait);
@@ -36,7 +35,7 @@ int dAcODecoB_c::doDelete() {
 
 int dAcODecoB_c::actorExecute() {
     mStateMgr.executeState();
-    PSMTXTrans(mWorldMtx, mPosition.x, mPosition.y, mPosition.z);
+    MTXTrans(mWorldMtx, mPosition.x, mPosition.y, mPosition.z);
     mWorldMtx.ZXYrotM(mRotation);
     mMdl.setLocalMtx(mWorldMtx);
     return SUCCEEDED;

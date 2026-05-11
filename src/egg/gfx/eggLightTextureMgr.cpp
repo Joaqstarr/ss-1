@@ -204,7 +204,7 @@ void LightTextureManager::drawAndCaptureTexture(f32 ox, f32 oy, f32 sx, f32 sy) 
 
     u16 x1, y1, x2, y2;
     TextureBuffer *buf = nullptr;
-    LightTexture::getTexDimensions(&x1, &y1, &x2, &y2, mTextureCount);
+    LightTexture::getRequiredPosAndSize(&x1, &y1, &x2, &y2, mTextureCount);
     x2 += x2 & 3;
     y2 += y2 & 3;
 
@@ -247,7 +247,7 @@ void LightTextureManager::drawAndCaptureTexture(f32 ox, f32 oy, f32 sx, f32 sy) 
         StateGX::GXSetScissor_(x1, y1, x2, y2);
         StateGX::GXSetScissorBoxOffset_(0, 0);
         nw4r::math::MTX34 identity;
-        PSMTXIdentity(identity);
+        MTXIdentity(identity);
 
         DrawGX::BeginDrawScreen(1, 1, 0);
         DrawGX::SetBlendMode(DrawGX::BLEND_14);

@@ -82,6 +82,7 @@ public:
     /* 0x00 */ const JPAChildShapeData* mpData;
 };
 
+// SS addition
 void fn_8031DBA0(JPAEmitterWorkData*);
 void JPARegistChildPrmEnv(JPAEmitterWorkData*);
 
