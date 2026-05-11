@@ -7,37 +7,43 @@
 #include "d/a/obj/d_a_obj_ring.h"
 #include "toBeSorted/d_emitter.h"
 #include "m/m_vec.h"
+#include "include/m/m_vec.h"
+#include "m/m3d/m_smdl.h"
 
 struct SingleFortuneRing {
-    /* 0x000 */ // ... other members ...
-
-    /* 0x234 */ mVec3_c mPos;
-
+    /* 0x004 */ m3d::smdl_c mModels1[10];
+    /* 0x11c */ m3d::smdl_c mModels2[10];
+    /* 0x234 */ mVec3_c mPosition;
+    /* 0x240 */ mVec3_c mPositions[10];
     /* 0x330 */ s16 mRotationY;
+    /* 0x332 */ u8 mUnkArr[20];
+    /* 0x346 */ bool mUnkBool1;
+    /* 0x347 */ bool mUnkBool2;
+    /* 0x348 */ bool mUnkBool3;
+    /* 0x349 */ u8 mUnkByte1;
+    /* 0x34a */ u8 mRingCount;
+    /* 0x34b */ u8 mBalloonCount;
+    /* 0x34c */ f32 mRadius;
+    /* 0x350 */ f32 mUnkFloat2;
+    /* 0x354 */ s16 mUnkShort1;
 
-    /* 0x346 */ u8 field_0x346;
-    /* 0x347 */ u8 field_0x347;
-    /* 0x348 */ u8 field_0x348;
-    /* 0x349 */ u8 padding_349;
-
-    /* 0x34A */ u8 field_0x34a;
-    /* 0x34B */ u8 field_0x34b;
-    /* 0x34C */ f32 mRadius;
-
-    /* 0x354 */ s16 field_0x354;
 
 
 
     void updateRotation();
     void checkPlayerCollision();
     void updateRing();
+    bool playerDistanceCheck(mVec3_c *param_2);
+    void randomizeRingPositions();
+
 };
+void setupCircularSlotPositions(SingleFortuneRing* ring);
 
 class dAcOfortuneRing_c : public dAcObjBase_c {
 public:
     dAcOfortuneRing_c();
     virtual ~dAcOfortuneRing_c();
-    void InitRings();
+    void initRings();
     void finishGame( int landingTile );
     void updateRings();
     STATE_FUNC_DECLARE(dAcOfortuneRing_c, Wait);

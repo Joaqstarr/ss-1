@@ -139,7 +139,6 @@ void dAcOrouletteIslandC_c::interactionWithBgCallback(dBgW * i_col, dAcObjBase_c
         dAcOrouletteIslandC_c* island = static_cast<dAcOrouletteIslandC_c*>(i_actor);
         island->mPlayerOnIsland = true;
 
-        /* Land on Island First Time -> map text appears */
         if(StoryflagManager::sInstance->getCounterOrFlag(STORYFLAG_FUN_FUN_ISLAND_DISCOVERED) == false) {
             StoryflagManager::sInstance->setFlag(STORYFLAG_FUN_FUN_ISLAND_DISCOVERED);
         }

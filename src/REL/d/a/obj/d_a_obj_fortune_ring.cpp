@@ -31,7 +31,7 @@ void dAcOfortuneRing_c::finalizeState_Wait() {}
 void dAcOfortuneRing_c::initializeState_Play() {
     mMultiplier = 1;
     mScore = 0;
-    InitRings();
+    initRings();
     dLytMiniGame_c::GetInstance()->scoreRelatedInit();
     dLytMiniGame_c::GetInstance()->setDisplayedPoints(mMultiplier);
 
@@ -51,7 +51,7 @@ void dAcOfortuneRing_c::executeState_Play() {
     }
     if(mIsFalling){
         for(int i = 0; i < mRingCount; i++){
-            if(mRings[i].mPos.y < link->mPosition.y + 40){
+            if(mRings[i].mPosition.y < link->mPosition.y + 40){
                 mRings[i].updateRotation();
                 mRings[i].checkPlayerCollision();
             }
@@ -68,7 +68,13 @@ void dAcOfortuneRing_c::finalizeState_Play() {
     dLytMiniGame_c::GetInstance()->startFinish();
 }
 
-void dAcOfortuneRing_c::InitRings(){ //INCOMPLETE
+void dAcOfortuneRing_c::initRings(){ //INCOMPLETE
+    static const u8 ring_count[10] = {
+        0, 1, 0, 1, 0, 1, 0, 1, 0, 1
+    };
+    static const u8 balloon_count[10] = {
+        0, 0, 3, 0, 4, 0, 1, 0, 4, 0
+    };
     static const f32 RING_RADII[10] = {
         1400.0f, 1000.0f, 800.0f, 800.0f, 1100.0f,
         1000.0f,    0.0f, 700.0f, 800.0f, 1000.0f
@@ -79,44 +85,36 @@ void dAcOfortuneRing_c::InitRings(){ //INCOMPLETE
         100,   0, 100, 200, 100
     };
 
-    static const u8 RING_CONFIG_A[10] = {
-        0, 1, 0, 1, 0, 1, 0, 1, 0, 1
+    static const bool ring_bools[10] = {
+        false, true, false, true, false, true, false, true, false, true
     };
 
-    static const u8 RING_CONFIG_B[10] = {
-        0, 0, 3, 0, 4, 0, 1, 0, 4, 0
-    };
 
-    static const u8 RING_CONFIG_C[10] = {
-        0, 1, 0, 1, 0, 1, 0, 1, 0, 1
-    };
+
+
 
     mRingCount = 10;
 
     for(int i = 0; i < mRingCount; i++){
         SingleFortuneRing* ring = &this->mRings[i];
 
-        // 1. Set Position
-        // Rings are stacked vertically. Y increases by 2000.0f for each ring.
-        // X and Z match the actor's base position.
-        ring->mPos.x = mPosition.x;
-        ring->mPos.y = mPosition.y + ((float)(i + 1) * 2000.0f);
-        ring->mPos.z = mPosition.z;
+        ring->mPosition.x = mPosition.x;
+        ring->mPosition.y = mPosition.y + ((i + 1) * 2000.0f);
+        ring->mPosition.z = mPosition.z;
 
-        // 2. Apply Config Properties
-        ring->field_0x34a = RING_CONFIG_A[i];
-        ring->field_0x34b = RING_CONFIG_B[i];
-        ring->mRadius     = RING_RADII[i];      // field_0x34c
-        ring->field_0x354 = RING_UNK_SHORTS[i];
-        ring->field_0x347 = RING_CONFIG_C[i];
+        ring->mRingCount = ring_count[i];
+        ring->mBalloonCount = balloon_count[i];
+        ring->mRadius = RING_RADII[i];
+        ring->mUnkShort1 = RING_UNK_SHORTS[i];
+        ring->mUnkBool2 = ring_bools[i];
 
-        ring->mRotationY = (s16)(cM::rnd() * 65535.0f); // field_0x330
+        ring->mRotationY = (s16)(cM::rnd() * 65535.0f);
 
-        //ring->initModel();     // fn_354_11A0
-        //ring->initCollision(); // fn_354_12D0
+        setupCircularSlotPositions(ring);
+        ring->randomizeRingPositions();
 
-        ring->field_0x346 = 0;
-        ring->field_0x348 = 0;
+        ring->mUnkBool1 = 0;
+        ring->mUnkBool3 = false;
     }
 
 }
@@ -143,7 +141,7 @@ void dAcOfortuneRing_c::finishGame( int landingTile) {
 
 void dAcOfortuneRing_c::updateRings(){
 	for(int i = 0; i < mRingCount; i++){
-    	if(mRings[0].mPos.y < dAcPy_c::GetLink()->mPosition.y + 40){
+    	if(mRings[0].mPosition.y < dAcPy_c::GetLink()->mPosition.y + 40){
             mRings[i].updateRing();
     	}
     }
@@ -168,3 +166,53 @@ void SingleFortuneRing::updateRing(){
 
 }
 
+bool SingleFortuneRing::playerDistanceCheck(mVec3_c *param_2){
+return true;
+
+}
+
+void setupCircularSlotPositions(SingleFortuneRing* ring){
+    int totalItems = (ring->mRingCount + ring->mBalloonCount) & 0xFF;
+
+    if (totalItems == 0) return;
+
+    s16 angleStep = (s16)(0xFFFF / totalItems);
+
+    for (int i = 0; i < totalItems; i++) {
+        s16 currentAngle = ring->mRotationY + (s16)(i * angleStep);
+
+        f32 sinVal = nw4r::math::SinFIdx((f32)currentAngle * (1.0f / 256.0f));
+        f32 cosVal = nw4r::math::CosFIdx((f32)currentAngle * (1.0f / 256.0f));
+
+        mVec3_c localPos;
+        localPos.x = ring->mPosition.x + (ring->mRadius * sinVal);
+        localPos.y = ring->mPosition.y;
+        localPos.z = ring->mPosition.z + (ring->mRadius * cosVal);
+
+        ring->mPositions[i] = localPos;
+    }
+}
+
+void SingleFortuneRing::randomizeRingPositions(){
+    int totalItems = mRingCount + mBalloonCount;
+
+    if (totalItems == 0) return;
+
+    for (int i = 0; i < totalItems; i++) {
+        mUnkArr[i] = 0;
+    }
+
+    u8 rings_placed = 0;
+    while (rings_placed < mRingCount) {
+
+        f32 rnd = cM::rnd();
+        int randIndex = (int)((float)totalItems * rnd);
+
+        if (randIndex >= totalItems) randIndex = 0;
+
+        if (mUnkArr[randIndex] == 0) {
+            mUnkArr[randIndex] = 1;
+            rings_placed++;
+        }
+    }
+}
